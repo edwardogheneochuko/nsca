@@ -1,5 +1,5 @@
 """Stage 2: XAI. KernelSHAP (local+global), IMM threshold tree (global rules), greedy counterfactuals."""
-import numpy as np, shap
+import numpy as np
 
 class Explainer:
     def __init__(self, net, X, vocab, tau=0.03):
@@ -18,19 +18,28 @@ class Explainer:
         dk = np.stack([D[:, self.cl_of == k].min(1) for k in range(self.K)], 1)
         e = np.exp(-(dk - dk.min(1, keepdims=True)) / self.tau); return e / e.sum(1, keepdims=True)
 
-    # ---- XAI-1: KernelSHAP ----
-    def shap_local(self, x, k, n=8, nsamples=300):
-        ex = shap.KernelExplainer(lambda Z: self.mu(Z)[:, k], self.W)
-        phi = np.asarray(ex.shap_values(x[None], nsamples=nsamples, silent=True)).reshape(-1)
+    # ---- XAI-1: Shapley attributions by permutation sampling (what KernelSHAP estimates; no shap package, low RAM) ----
+    def _phi(self, x, k, n_perm=60, seed=0):
+        rng, phi = np.random.default_rng(seed), np.zeros(len(x))
+        for _ in range(n_perm):
+            b = self.W[rng.integers(len(self.W))]              # background = L2 prototype
+            idx = np.where(x != b)[0]
+            if len(idx) == 0: continue
+            order = rng.permutation(idx); S = np.tile(b, (len(order) + 1, 1))
+            for i, j in enumerate(order): S[i + 1:, j] = x[j]
+            phi[order] += np.diff(self.mu(S)[:, k])
+        return phi / n_perm
+
+    def shap_local(self, x, k, n=8, nsamples=60):
+        phi = self._phi(x, k, nsamples)
         return [(self.vocab[j], float(phi[j])) for j in np.argsort(-np.abs(phi))[:n] if abs(phi[j]) > 1e-4]
 
     def signature(self, k, n=8, per=6):
-        """Global: mean |SHAP| over sample patients of cluster k."""
+        """Global: mean |phi| over sample patients of cluster k."""
         if k not in self.sig:
             P = self.X[self.assign == k][:per]
             if len(P) == 0: self.sig[k] = []; return []
-            ex = shap.KernelExplainer(lambda Z: self.mu(Z)[:, k], self.W)
-            phi = np.abs(np.asarray(ex.shap_values(P, nsamples=100, silent=True))).reshape(len(P), -1).mean(0)
+            phi = np.mean([np.abs(self._phi(p, k, 20)) for p in P], 0)
             self.sig[k] = [(self.vocab[j], float(phi[j])) for j in np.argsort(-phi)[:n] if phi[j] > 1e-4]
         return self.sig[k]
 
