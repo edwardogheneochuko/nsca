@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NSCA Disease Identification</title><style>
+:root{--b:#0f6e56;--bg:#f7f8f7;--c:#fff;--t:#1d2421;--m:#66726c;--r:#b3261e}
+body{font:15px/1.5 system-ui,sans-serif;background:var(--bg);color:var(--t);max-width:900px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:0}h2{font-size:16px;margin:0 0 6px}.card{background:var(--c);border:1px solid #dde3df;border-radius:10px;padding:14px;margin:12px 0}
+.sub{color:var(--m);font-size:13px}input{width:100%;padding:10px;border:1px solid #c5cfc9;border-radius:8px;box-sizing:border-box}
+.chip{display:inline-block;padding:3px 10px;margin:3px;border-radius:14px;border:1px solid #c5cfc9;background:#fff;cursor:pointer;font-size:13px}
+.chip.on{background:var(--b);color:#fff;border-color:var(--b)}#list{max-height:130px;overflow:auto;margin-top:6px}
+button{background:var(--b);color:#fff;border:0;padding:10px 18px;border-radius:8px;font-size:15px;cursor:pointer;margin-top:8px}
+.bar{height:8px;background:#e3e9e5;border-radius:4px}.bar i{display:block;height:8px;border-radius:4px;background:var(--b)}
+.alert{background:#fdecea;border:1px solid var(--r);color:var(--r);padding:10px;border-radius:8px}.row{display:flex;gap:8px;align-items:center;margin:3px 0}
+.row span:first-child{width:170px;font-size:13px}.neg i{background:var(--r)}small{color:var(--m)}li{margin:2px 0}
+</style></head><body>
+<h1>NSCA Disease Identification</h1><div class="sub">Growing neuro-symbolic clustering. Possible conditions only, not a diagnosis.</div>
+<div class="card"><h2>1. Choose your symptoms</h2><input id="q" placeholder="Search symptoms (e.g. fever, headache)">
+<div id="list"></div><div id="sel"></div><button id="go">Analyse</button></div><div id="out"></div>
+<script>
+const $=id=>document.getElementById(id);let all=[],sel=new Set();
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e};
+function chips(box,items){box.replaceChildren();items.forEach(s=>{const c=el('span','chip'+(sel.has(s.id)?' on':''),s.label);
+c.onclick=()=>{sel.has(s.id)?sel.delete(s.id):sel.add(s.id);draw()};box.append(c)})}
+function draw(){const f=$('q').value.toLowerCase();chips($('list'),all.filter(s=>s.label.includes(f)).slice(0,40));
+chips($('sel'),all.filter(s=>sel.has(s.id)))}
+fetch('/api/symptoms').then(r=>r.json()).then(d=>{all=d;draw()});$('q').oninput=draw;
+function bars(box,items,neg){items.forEach(i=>{const m=Math.max(...items.map(a=>Math.abs(a.value)))||1,r=el('div','row'+(i.value<0?' neg':''));
+r.append(el('span','',i.symptom),Object.assign(el('div','bar'),{style:'flex:1'}),el('small','',i.value.toFixed(3)));
+const b=r.children[1];const f=el('i');f.style.width=(Math.abs(i.value)/m*100)+'%';b.append(f);box.append(r)})}
+function card(title,note){const c=el('div','card');c.append(el('h2','',title));if(note)c.append(el('div','sub',note));$('out').append(c);return c}
+$('go').onclick=async()=>{if(!sel.size)return;$('out').replaceChildren(el('div','sub','Analysing...'));
+const r=await (await fetch('/api/diagnose',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({symptoms:[...sel]})})).json();
+$('out').replaceChildren();
+if(r.red_flags.length){const a=el('div','alert','Urgent: '+r.red_flags.join(', ')+' can signal an emergency. Seek medical care now.');$('out').append(a)}
+let c=card('2. Possible conditions',r.status==='insufficient'?'Too few symptoms for a reliable result. Add at least 3.':r.status==='unmapped'?'No confident match in the knowledge base. This case would go to a clinician review queue.':'Ranked by symptom similarity and rule agreement.');
+r.ranked.forEach(d=>{const w=el('div');w.append(el('b','',d.disease+'  '+Math.round(d.share*100)+'%'));
+const b=el('div','bar');const f=el('i');f.style.width=d.share*100+'%';b.append(f);w.append(b);
+w.append(el('small','',d.description));
+if(d.matched.length)w.append(el('div','sub','Matches: '+d.matched.map(s=>s.replaceAll('_',' ')).join(', ')));
+if(d.precautions.length){const u=el('ul');d.precautions.forEach(p=>u.append(el('li','',p)));w.append(u)}
+w.append(el('div','sub','SNOMED CT: '+(d.codes.snomed||'not set')+'  |  ICD-11: '+(d.codes.icd11||'not set')));w.style.margin='10px 0';c.append(w)});
+c=card('3. Why? (local SHAP)','Symptoms that pushed you into cluster '+r.cluster+' ('+Math.round(r.membership*100)+'% membership). Red = pushes away.');bars(c,r.shap);
+c=card('4. The rule (IMM tree)','Global decision path for this patient:');const u=el('ul');r.rule.forEach(x=>u.append(el('li','',x)));c.append(u);
+c=card('5. What would change the answer? (counterfactuals)');
+r.counterfactuals.forEach(x=>c.append(el('p','',(x.valid?'Valid: ':'Partial: ')+x.question+'  Leading alternative: '+x.leading_disease)));
+c=card('6. Global signature of this cluster (mean |SHAP|)');bars(c,r.signature);
+c=card('7. How this result was made');r.stages.forEach(s=>{const p=el('p');p.append(el('b','',s.stage+': '),document.createTextNode(s.text));c.append(p)});
+c.append(el('div','sub',r.disclaimer))};
+</script></body></html>
