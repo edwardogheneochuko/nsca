@@ -1,43 +1,74 @@
-# NSCA Disease Identification Backend (prototype)
+# nsca-backend
 
-FastAPI research backend for a shared web/mobile client. This is a software scaffold, not a clinically validated diagnostic system. Its bundled symptom vocabulary and broad viral-like demonstration rule are placeholders; they are not SNOMED CT or ICD-11 data and must not be used for medical decisions.
+Backend for NSCA (Neuro-Symbolic Clustering Architecture), an MSc research prototype.
+**Not a clinically validated diagnostic tool.** Dataset associations are not diagnoses.
 
-## Windows setup (PowerShell)
+## Layout
+```
+api.py              FastAPI routes
+engine.py           trains ESOINN on the loaded dataset; identification and held-out evaluation
+esoinn.py           ESOINN implementation (see its docstring for interpretive choices)
+dataset_loader.py   load, validate, clean, preprocess; consistent feature vectors
+extractor.py        rule-based symptom extraction against the dataset's own symptom names
+schemas.py          request/response models (frontend types must mirror these)
+data/original/      put disease_symptoms.csv here (never modified by the code)
+data/processed/     generated: cases.csv, features.npz, feature_names.json, manifest.json
+tests/
+```
 
-```powershell
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
+## 1. Dataset (required, not included)
+Place a real CSV at `data/original/disease_symptoms.csv` with columns
+`Disease, Symptom_1, Symptom_2, ...` (blank cells allowed). A common starting point is the Kaggle
+"Disease Symptom Prediction" dataset. Before use, verify provenance, licence, label quality and
+suitability, then record them here (and commit the CSV only if the licence permits redistribution):
+
+- Source: _TODO_
+- Licence: _TODO_
+- Retrieved on: _TODO_
+
+The server refuses to start the model, and the API answers 503 with the reason, if the file is
+missing or invalid. Cleaning drops rows with no disease or no symptoms and removes exact duplicate
+cases; counts of both are shown in `/model/status`.
+
+## 2. Run
+```
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-Copy-Item .env.example .env
 uvicorn api:app --reload
 ```
+Check `http://localhost:8000/model/status` first: it shows whether the dataset loaded, the number of
+training rows, diseases and symptom features, rows dropped, duplicates removed, conflicting patterns
+(identical symptoms under different diseases), ESOINN node/cluster counts, and a held-out evaluation.
 
-Open `http://127.0.0.1:8000/docs`.
+Environment variables: `NSCA_DATASET_PATH`, `NSCA_PROCESSED_DIR`, `NSCA_CORS_ORIGINS` (comma-separated).
 
-## Tests
+## Endpoints
+- `GET /health`
+- `GET /model/status`
+- `POST /symptoms/extract` `{description}`
+- `POST /identify` `{description, duration?, severity?, symptoms?}` returns one outcome:
+  `known_pattern` (one disease association plus evidence), `potentially_novel_pattern`
+  (flagged for human review; not a claim of a new disease) or `inconclusive`.
+  No ranking and no list of competing diseases is ever returned.
 
-```powershell
-python -m pytest -v
+Feedback storage (`storage.py`, `/feedback`) is not built yet.
+
+## Test
 ```
-
-## Example request
-
-```powershell
-$body = @{
-  description = "I have fever, cough, sore throat and body aches"
-  symptom_duration = "3 days"
-  severity = "moderate"
-} | ConvertTo-Json
-
-Invoke-RestMethod -Uri "http://127.0.0.1:8000/api/v1/identify" -Method Post -ContentType "application/json" -Body $body
+pytest
 ```
+Tests use generated placeholder data (`tests/fixtures.py`), never real disease data.
 
-## Important limitations
+## Known limitations
+- The held-out evaluation uses full symptom vectors from the same dataset. It does not measure
+  performance on partial or free-text descriptions, and it is not clinical validation.
+- Symptom extraction only matches the dataset's own symptom names as phrases. "Skin rash" is found,
+  "I have a rash" is not.
+- Users who report only some of a disease's symptoms may land outside a cluster's similarity range and be
+  flagged `potentially_novel_pattern`. Evaluate this on your real dataset before relying on it.
+- Thresholds in `EngineConfig` and `ESOINNConfig` are untuned defaults.
+- `duration` and `severity` are echoed back and severity only changes the urgent-care text; the dataset has no such fields.
 
-- The included ESOINN-style incremental graph implementation is a prototype, not a validated reference implementation of ESOINN.
-- A single patient input is not sufficient to train a medically meaningful clustering model. Train/evaluate on appropriately curated and ethically sourced data before interpreting clusters.
-- No disease codes are fabricated. SNOMED CT and ICD-11 integration must use authorized data/services and traceable mappings.
-- A potentially novel pattern is a review flag, not evidence that a new disease exists.
-- Do not use this prototype to make health decisions. For urgent or worsening symptoms, seek qualified medical care.
-- SQLite stores case responses locally; configure privacy, retention, access controls, and secure deployment before handling real patient data.
+## Deploy (Render)
+Start command: `uvicorn api:app --host 0.0.0.0 --port $PORT`. Set `NSCA_CORS_ORIGINS` to the deployed web
+frontend origin(s). The processed folder is written best-effort; a read-only filesystem does not stop startup.

@@ -1,32 +1,48 @@
+import pytest
 from fastapi.testclient import TestClient
-from api import app
 
-client = TestClient(app)
+from api import create_app
+from fixtures import write_synthetic_csv
 
-def test_health():
-    response = client.get("/health")
-    assert response.status_code == 200
-    assert response.json()["status"] == "ok"
 
-def test_extract_symptoms():
-    response = client.post("/api/v1/symptoms/extract", json={"description": "I have fever and headache"})
-    assert response.status_code == 200
-    assert set(response.json()["symptoms"]) == {"fever", "headache"}
+@pytest.fixture
+def client(tmp_path):
+    csv = write_synthetic_csv(tmp_path / "s.csv")
+    with TestClient(create_app(str(csv), str(tmp_path / "processed"))) as c:
+        yield c
 
-def test_inconclusive_for_unrecognized_text():
-    response = client.post("/api/v1/identify", json={"description": "I feel strange"})
-    assert response.status_code == 200
-    assert response.json()["outcome"] == "inconclusive"
 
-def test_identification_returns_one_outcome():
-    response = client.post("/api/v1/identify", json={"description": "I have fever, cough, sore throat and body aches"})
-    assert response.status_code == 200
-    assert response.json()["outcome"] in {"known_pattern", "potentially_novel_pattern", "inconclusive"}
-    assert "disease_candidates" not in response.json()
-    assert response.json()["review_required"] is True
+def test_health_and_status(client):
+    assert client.get("/health").json() == {"status": "ok", "dataset_loaded": True}
+    s = client.get("/model/status").json()
+    assert s["dataset_loaded"] and s["esoinn_trained"]
+    assert s["n_diseases"] == 3 and s["n_symptom_features"] > 0 and s["n_training_rows"] > 0
+    assert s["evaluation"]["performed"] is True
 
-def test_urgent_symptoms_are_not_diagnosed():
-    response = client.post("/api/v1/identify", json={"description": "I have chest pain and shortness of breath"})
-    assert response.status_code == 200
-    assert response.json()["outcome"] == "inconclusive"
-    assert response.json()["disease"] is None
+
+def test_extract_and_identify(client):
+    r = client.post("/symptoms/extract", json={"description": "I have sym 00 and sym 01 but no sym 02"})
+    assert r.json() == {"matched_symptoms": ["sym_00", "sym_01"], "negated_symptoms": ["sym_02"]}
+    r = client.post("/identify", json={"description": "sym 05, sym 06, sym 07, sym 08", "severity": "severe"})
+    body = r.json()
+    assert r.status_code == 200 and body["outcome"] in ("known_pattern", "potentially_novel_pattern", "inconclusive")
+    assert "urgent" in body["urgent_care_notice"].lower() and body["disclaimer"]
+    assert "diseases" not in body and "ranking" not in body
+
+
+def test_identify_with_no_recognised_symptoms_is_inconclusive(client):
+    body = client.post("/identify", json={"description": "I feel strange"}).json()
+    assert body["outcome"] == "inconclusive" and body["disease"] is None
+
+
+def test_validation_error(client):
+    assert client.post("/identify", json={"description": ""}).status_code == 422
+    assert client.post("/identify", json={"description": "x", "severity": "extreme"}).status_code == 422
+
+
+def test_503_when_dataset_missing(tmp_path):
+    with TestClient(create_app(str(tmp_path / "missing.csv"), str(tmp_path / "p"))) as c:
+        assert c.get("/health").json()["dataset_loaded"] is False
+        r = c.get("/model/status")
+        assert r.status_code == 503 and "not found" in r.json()["detail"]
+        assert c.post("/identify", json={"description": "cough"}).status_code == 503

@@ -1,38 +1,93 @@
+"""Request/response models. The frontend types in nsca-mobile/types must mirror these exactly."""
+from __future__ import annotations
+
+from typing import Literal, Optional
+
 from pydantic import BaseModel, Field
-from typing import Literal
+
+Outcome = Literal["known_pattern", "potentially_novel_pattern", "inconclusive"]
+Severity = Literal["mild", "moderate", "severe"]
+
+
+class HealthResponse(BaseModel):
+    status: str
+    dataset_loaded: bool
+
+
+class EvaluationSummary(BaseModel):
+    performed: bool
+    n_train: Optional[int] = None
+    n_test: Optional[int] = None
+    known_pattern: Optional[int] = None
+    potentially_novel_pattern: Optional[int] = None
+    inconclusive: Optional[int] = None
+    known_pattern_accuracy: Optional[float] = None
+    coverage: Optional[float] = None
+    note: str
+
+
+class ModelStatusResponse(BaseModel):
+    dataset_loaded: bool
+    original_path: str
+    processed_dir: str
+    processed_written: bool
+    dataset_sha256: str
+    n_raw_rows: int
+    n_rows_dropped: int
+    n_duplicates_removed: int
+    n_conflicting_patterns: int
+    n_training_rows: int
+    n_diseases: int
+    n_symptom_features: int
+    esoinn_trained: bool
+    n_nodes: int
+    n_clusters: int
+    evaluation: Optional[EvaluationSummary] = None
+    research_prototype_notice: str
+
+
+class SymptomExtractRequest(BaseModel):
+    description: str = Field(min_length=1, max_length=2000)
+
+
+class SymptomExtractResponse(BaseModel):
+    matched_symptoms: list[str]
+    negated_symptoms: list[str]
+
 
 class IdentifyRequest(BaseModel):
-    description: str = Field(min_length=3, max_length=5000)
-    age_years: int | None = Field(default=None, ge=0, le=120)
-    symptom_duration: str | None = Field(default=None, max_length=200)
-    severity: Literal["mild", "moderate", "severe", "unknown"] = "unknown"
+    description: str = Field(min_length=1, max_length=2000)
+    duration: Optional[str] = Field(default=None, max_length=100)
+    severity: Optional[Severity] = None
+    symptoms: Optional[list[str]] = Field(default=None, max_length=50)  # optional explicit symptom names
 
-class ExtractRequest(BaseModel):
-    description: str = Field(min_length=1, max_length=5000)
 
-class DiseaseInfo(BaseModel):
-    id: str
-    name: str
-    terminology: str | None = None
-    code: str | None = None
-    evidence_note: str
+class Evidence(BaseModel):
+    matched_symptoms: list[str]
+    typical_symptoms: list[str]
+    cluster_support: Optional[int] = None
+    cluster_purity: Optional[float] = None
+    distance: Optional[float] = None
+    similarity_threshold: Optional[float] = None
 
-class Explanation(BaseModel):
-    observed_symptoms: list[str]
-    supporting_evidence: list[str]
-    missing_information: list[str]
-    cluster_id: str | None = None
-    reasoning_summary: str
 
 class IdentifyResponse(BaseModel):
-    case_id: str
-    outcome: Literal["known_pattern", "potentially_novel_pattern", "inconclusive"]
-    disease: DiseaseInfo | None
-    explanation: Explanation
-    review_required: bool
+    outcome: Outcome
+    reason_code: str
+    disease: Optional[str] = None
+    observed_symptoms: list[str]
+    unrecognised_symptoms: list[str]
+    cluster_id: Optional[int] = None
+    node_id: Optional[int] = None
+    evidence: Evidence
+    explanation: str
+    human_review_required: bool
+    duration: Optional[str] = None
+    severity: Optional[Severity] = None
+    urgent_care_notice: str
     disclaimer: str
 
-class FeedbackRequest(BaseModel):
-    case_id: str = Field(min_length=1, max_length=100)
-    reviewer_outcome: Literal["confirmed_association", "not_supported", "needs_review"]
-    notes: str | None = Field(default=None, max_length=3000)
+
+class ErrorResponse(BaseModel):
+    detail: str
+    error_code: Optional[str] = None

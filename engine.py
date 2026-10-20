@@ -1,198 +1,215 @@
+"""NSCA engine: trains ESOINN on the loaded dataset and identifies symptom patterns.
+
+ESOINN is unsupervised. Disease labels are attached afterwards, per ESOINN cluster
+(subclass), from the training rows whose nearest prototype node belongs to it. A cluster therefore only "represents"
+a disease to the extent the data supports it (cluster support and purity are reported).
+
+Outcomes
+  known_pattern             input lies within a prototype's similarity threshold AND that
+                            prototype is supported by enough, sufficiently pure rows of one disease
+  potentially_novel_pattern input lies outside every learned prototype's similarity threshold;
+                            flagged for human review. This does NOT mean a new disease exists.
+  inconclusive              too little evidence, or the matching prototype is weak or ambiguous
+
+The engine never ranks diseases and never returns more than one disease.
 """
-Research prototype components:
-- ESOINN-style incremental graph clustering for numeric symptom vectors.
-- Small demonstration symptom vocabulary and explicit demonstration rules.
-This is NOT a clinically validated model or production ESOINN package.
-Do not use its outputs for medical decisions.
-"""
-from collections import defaultdict
-from math import sqrt
-import re
+from __future__ import annotations
+
+from collections import Counter
+from dataclasses import asdict, dataclass, field
+from typing import Iterable, Optional
+
 import numpy as np
-import os
 
-KNOWN_CONCEPTS = {
-    "fever": "Fever",
-    "headache": "Headache",
-    "cough": "Cough",
-    "sore_throat": "Sore throat",
-    "runny_nose": "Runny nose",
-    "body_ache": "Body aches",
-    "fatigue": "Fatigue",
-    "vomiting": "Vomiting",
-    "diarrhea": "Diarrhea",
-    "rash": "Rash",
-    "joint_pain": "Joint pain",
-    "chills": "Chills",
-    "shortness_of_breath": "Shortness of breath",
-    "chest_pain": "Chest pain",
-    "abdominal_pain": "Abdominal pain",
-    "weakness": "Weakness",
-}
+from dataset_loader import LoadedDataset, normalise_symptom, vectorize
+from esoinn import ESOINN, ESOINNConfig
 
-ALIASES = {
-    "fever": ["fever", "high temperature", "hot body", "temperature"],
-    "headache": ["headache", "head pain", "pain in my head"],
-    "cough": ["cough", "coughing"],
-    "sore_throat": ["sore throat", "throat pain"],
-    "runny_nose": ["runny nose", "running nose", "nasal discharge"],
-    "body_ache": ["body ache", "body aches", "muscle pain", "muscle aches"],
-    "fatigue": ["fatigue", "tired", "tiredness", "exhausted"],
-    "vomiting": ["vomiting", "vomit", "throwing up"],
-    "diarrhea": ["diarrhea", "diarrhoea", "loose stool"],
-    "rash": ["rash", "skin rash"],
-    "joint_pain": ["joint pain", "painful joints"],
-    "chills": ["chills", "shivering"],
-    "shortness_of_breath": ["shortness of breath", "difficulty breathing", "breathlessness"],
-    "chest_pain": ["chest pain", "pain in my chest"],
-    "abdominal_pain": ["abdominal pain", "stomach pain", "belly pain"],
-    "weakness": ["weakness", "weak"],
-}
+KNOWN = "known_pattern"
+NOVEL = "potentially_novel_pattern"
+INCONCLUSIVE = "inconclusive"
 
-# Demonstration-only rules. These are intentionally not represented as a validated medical knowledge base.
-DEMO_DISEASES = {
-    "demo_viral_syndrome": {
-        "id": "demo_viral_syndrome",
-        "name": "Unspecified viral-like syndrome (demonstration concept)",
-        "terminology": None,
-        "code": None,
-        "evidence_note": "Demonstration rule only; not a validated disease association and not mapped to SNOMED CT or ICD-11."
-    }
-}
-DEMO_RULES = {
-    "demo_viral_syndrome": {"required_any": {"fever", "cough", "sore_throat", "runny_nose", "body_ache"}, "min_matches": 3}
-}
 
-def extract_symptoms(text: str) -> list[str]:
-    lower = re.sub(r"[^a-z0-9\s'-]", " ", text.lower())
-    found = set()
-    for symptom, phrases in ALIASES.items():
-        for phrase in phrases:
-            if re.search(r"(?<![a-z])" + re.escape(phrase) + r"(?![a-z])", lower):
-                found.add(symptom)
-                break
-    # Simple negation filter avoids counting a directly negated phrase such as "no fever".
-    for symptom, phrases in ALIASES.items():
-        for phrase in phrases:
-            if re.search(r"\b(no|not|without|denies|don't have|do not have)\s+(?:any\s+)?" + re.escape(phrase) + r"\b", lower):
-                found.discard(symptom)
-    return sorted(found)
+@dataclass
+class EngineConfig:
+    epochs: int = 5
+    seed: int = 42
+    min_symptoms: int = 2            # fewer recognised symptoms -> inconclusive
+    min_cluster_support: int = 5     # training rows a cluster needs to name a disease
+    purity_threshold: float = 0.8    # share of a cluster's rows that must be one disease
+    ambiguity_margin: float = 0.10   # runner-up cluster this close, different disease -> inconclusive
+    typical_symptom_share: float = 0.5
 
-class ESOINNPrototype:
-    """
-    Compact incremental graph-clustering prototype inspired by ESOINN.
-    A production implementation should be validated against the ESOINN paper/reference
-    implementation and evaluated on representative clinical data.
-    """
-    def __init__(self, dimension: int, similarity_threshold: float = 0.45):
-        self.dimension = dimension
-        self.threshold = similarity_threshold
-        self.nodes: list[np.ndarray] = []
-        self.counts: list[int] = []
-        self.edges: set[tuple[int, int]] = set()
-        self.ready = False
 
-    def fit_one(self, vector: np.ndarray):
-        vector = np.asarray(vector, dtype=float)
-        if vector.shape != (self.dimension,):
-            raise ValueError("Unexpected vector dimension")
-        if not self.nodes:
-            self.nodes.append(vector.copy())
-            self.counts.append(1)
-            self.ready = True
-            return 0
-        distances = [float(np.linalg.norm(vector - node)) for node in self.nodes]
-        order = np.argsort(distances)
-        nearest, second = int(order[0]), int(order[1]) if len(order) > 1 else int(order[0])
-        if distances[nearest] > self.threshold:
-            self.nodes.append(vector.copy())
-            self.counts.append(1)
-            new_index = len(self.nodes) - 1
-            if len(order):
-                self.edges.add(tuple(sorted((new_index, nearest))))
-            return new_index
-        n = self.counts[nearest]
-        self.nodes[nearest] = self.nodes[nearest] + (vector - self.nodes[nearest]) / (n + 1)
-        self.counts[nearest] += 1
-        if second != nearest and distances[second] <= self.threshold * 1.5:
-            self.edges.add(tuple(sorted((nearest, second))))
-        return nearest
+@dataclass
+class ClusterProfile:
+    disease: str
+    support: int
+    purity: float
+    typical_symptoms: list[str]
 
-    def nearest(self, vector: np.ndarray):
-        if not self.nodes:
-            return None, None
-        distances = [float(np.linalg.norm(vector - node)) for node in self.nodes]
-        idx = int(np.argmin(distances))
-        return idx, distances[idx]
 
-    def cluster_id(self, node_id: int) -> str:
-        # Prototype reports node IDs, not a clinically meaningful disease cluster.
-        return f"esoinn-node-{node_id}"
+@dataclass
+class Identification:
+    outcome: str
+    reason_code: str
+    disease: Optional[str]
+    observed_symptoms: list[str]
+    unrecognised_symptoms: list[str]
+    cluster_id: Optional[int]
+    node_id: Optional[int]
+    matched_symptoms: list[str] = field(default_factory=list)
+    typical_symptoms: list[str] = field(default_factory=list)
+    cluster_support: Optional[int] = None
+    cluster_purity: Optional[float] = None
+    distance: Optional[float] = None
+    similarity_threshold: Optional[float] = None
+    explanation: str = ""
+    human_review_required: bool = False
 
-SYMPTOM_ORDER = list(KNOWN_CONCEPTS.keys())
-MODEL = ESOINNPrototype(len(SYMPTOM_ORDER))
 
-def encode(symptoms: list[str]) -> np.ndarray:
-    selected = set(symptoms)
-    return np.array([1.0 if s in selected else 0.0 for s in SYMPTOM_ORDER], dtype=float)
+class NSCAEngine:
+    def __init__(self, dataset: LoadedDataset, config: EngineConfig | None = None,
+                 esoinn_config: ESOINNConfig | None = None):
+        self.dataset = dataset
+        self.cfg = config or EngineConfig()
+        self.esoinn_cfg = esoinn_config or ESOINNConfig()
+        self.model = ESOINN(self.esoinn_cfg)
+        self.profiles: dict[int, ClusterProfile] = {}
+        self.cluster_threshold: dict[int, float] = {}
+        self.symptom_index = dataset.symptom_index
+        self.evaluation: Optional[dict] = None
+        self._train(dataset.X, dataset.y)
 
-def identify(symptoms: list[str], description: str) -> dict:
-    vector = encode(symptoms)
-    node_id = MODEL.fit_one(vector)
-    nearest_id, distance = MODEL.nearest(vector)
-    missing = []
-    if len(symptoms) < 2:
-        missing.append("More symptom detail is needed before an association can be assessed.")
-    if not any(s in symptoms for s in ("fever", "cough", "vomiting", "diarrhea", "rash", "shortness_of_breath", "chest_pain", "abdominal_pain")):
-        missing.append("Add relevant symptoms and their duration, severity, and progression.")
-    urgent = {"shortness_of_breath", "chest_pain"}
-    if urgent.intersection(symptoms):
+    # ---------- training ----------
+    def _train(self, X: np.ndarray, y: np.ndarray) -> None:
+        Xf = X.astype(np.float64)
+        self.model.fit(Xf, epochs=self.cfg.epochs, seed=self.cfg.seed)
+        by_cluster: dict[int, list[int]] = {}
+        for r in range(len(Xf)):
+            nid, _, _, _ = self.model.nearest_two(Xf[r])
+            by_cluster.setdefault(self.model.nodes[nid].label, []).append(r)
+        symptoms = self.dataset.symptoms
+        for label, rows in by_cluster.items():
+            counts = Counter(y[rows])
+            disease, n_dom = counts.most_common(1)[0]
+            disease = str(disease)
+            dom_rows = [r for r in rows if y[r] == disease]
+            share = Xf[dom_rows].mean(axis=0)
+            typical = [symptoms[k] for k in np.where(share >= self.cfg.typical_symptom_share)[0]]
+            self.profiles[label] = ClusterProfile(disease, len(rows), n_dom / len(rows), typical)
+        for label in {n.label for n in self.model.nodes.values()}:
+            self.cluster_threshold[label] = max(
+                self.model.similarity_threshold(i) for i, n in self.model.nodes.items() if n.label == label)
+
+    def status(self) -> dict:
         return {
-            "outcome": "inconclusive",
-            "disease": None,
-            "explanation": {
-                "observed_symptoms": [KNOWN_CONCEPTS[s] for s in symptoms],
-                "supporting_evidence": [],
-                "missing_information": ["Urgent symptoms require prompt assessment by a qualified medical professional."],
-                "cluster_id": MODEL.cluster_id(node_id),
-                "reasoning_summary": "The system does not attempt to diagnose potentially urgent symptoms. Seek urgent medical care, especially for severe or sudden symptoms."
-            },
-            "review_required": True
+            "esoinn_trained": True,
+            "n_nodes": self.model.n_nodes,
+            "n_clusters": self.model.n_clusters,
+            "esoinn_config": asdict(self.esoinn_cfg),
+            "engine_config": asdict(self.cfg),
+            "evaluation": self.evaluation,
         }
 
-    matches = []
-    for disease_id, rule in DEMO_RULES.items():
-        count = len(set(symptoms) & rule["required_any"])
-        if count >= rule["min_matches"]:
-            matches.append((disease_id, count))
+    # ---------- identification ----------
+    def identify(self, symptoms: Iterable[str]) -> Identification:
+        names = list(dict.fromkeys(normalise_symptom(s) for s in symptoms if s and s.strip()))
+        observed = [s for s in names if s in self.symptom_index]
+        unknown = [s for s in names if s not in self.symptom_index]
 
-    if len(symptoms) < 2:
-        outcome, disease, support, summary, review = "inconclusive", None, [], "The available symptom information is insufficient for even a preliminary pattern association.", True
-    elif matches:
-        disease_id, count = matches[0]
-        outcome = "known_pattern"
-        disease = DEMO_DISEASES[disease_id]
-        support = [f"Demonstration rule matched {count} symptoms associated with a broad viral-like pattern."]
-        summary = "A demonstration rule matched this symptom pattern. This is not a validated clinical inference; the prototype knowledge base must be replaced with reviewed medical data."
-        review = True
-    elif distance is not None and distance > MODEL.threshold:
-        outcome, disease, support = "potentially_novel_pattern", None, []
-        summary = "The input formed a relatively distant pattern in this prototype's feature space. This is only a research flag and does not establish a new disease."
-        review = True
-    else:
-        outcome, disease, support = "inconclusive", None, []
-        summary = "The current demonstration knowledge base does not provide enough validated evidence to support a disease association."
-        review = True
+        if len(observed) < self.cfg.min_symptoms:
+            return Identification(
+                INCONCLUSIVE, "insufficient_evidence", None, observed, unknown, None, None,
+                explanation=(f"Only {len(observed)} symptom(s) were recognised against the dataset's "
+                             f"features; at least {self.cfg.min_symptoms} are needed. No result is forced."),
+            )
 
+        x = vectorize(observed, self.symptom_index)
+        n1, n2, d1, d2 = self.model.nearest_two(x)
+        node = self.model.nodes[n1]
+        t1 = self.cluster_threshold[node.label]
+        base = dict(observed_symptoms=observed, unrecognised_symptoms=unknown,
+                    cluster_id=node.label, node_id=n1, distance=round(d1, 4),
+                    similarity_threshold=round(t1, 4))
+
+        if d1 > t1:
+            return Identification(
+                NOVEL, "outside_similarity_threshold", None, **base, human_review_required=True,
+                explanation=("This symptom combination lies outside the similarity range of every pattern "
+                             "learned from the dataset. It may be unfamiliar, incomplete, or simply atypical. "
+                             "This is not evidence of a new disease; it is flagged for human review."),
+            )
+
+        prof = self.profiles.get(node.label)
+        if prof is None or prof.support < self.cfg.min_cluster_support:
+            return Identification(
+                INCONCLUSIVE, "weak_support", None, **base, cluster_support=prof.support if prof else 0,
+                explanation=(f"The closest learned pattern is backed by too few dataset cases "
+                             f"(minimum {self.cfg.min_cluster_support}) to associate it with a disease."),
+            )
+        if prof.purity < self.cfg.purity_threshold:
+            return Identification(
+                INCONCLUSIVE, "mixed_cluster", None, **base, cluster_support=prof.support,
+                cluster_purity=round(prof.purity, 3),
+                explanation=("The closest learned pattern is shared by several diseases in the dataset, so "
+                             "no single disease is supported."),
+            )
+        p2 = self.profiles.get(self.model.nodes[n2].label) if n2 is not None else None
+        if p2 is not None and p2.disease != prof.disease and d2 <= d1 * (1 + self.cfg.ambiguity_margin):
+            return Identification(
+                INCONCLUSIVE, "ambiguous_match", None, **base, cluster_support=prof.support,
+                cluster_purity=round(prof.purity, 3),
+                explanation=("Learned patterns associated with different diseases fit this input almost "
+                             "equally well, so no single disease is supported."),
+            )
+
+        matched = [s for s in observed if s in prof.typical_symptoms]
+        return Identification(
+            KNOWN, "supported_pattern", prof.disease, **base, matched_symptoms=matched,
+            typical_symptoms=prof.typical_symptoms, cluster_support=prof.support,
+            cluster_purity=round(prof.purity, 3),
+            explanation=(f"The symptoms fall within a learned pattern (cluster {node.label}) whose "
+                         f"{prof.support} supporting dataset cases are {prof.purity:.0%} '{prof.disease}'. "
+                         "This is a dataset association, not a diagnosis."),
+        )
+
+
+def evaluate_holdout(dataset: LoadedDataset, config: EngineConfig | None = None,
+                     esoinn_config: ESOINNConfig | None = None, test_fraction: float = 0.2,
+                     seed: int = 7) -> dict:
+    """Train on a stratified split and score on the held-out rows (full symptom vectors).
+
+    Internal sanity check on dataset-derived data only. It is not clinical validation and
+    says nothing about partial or real-world symptom descriptions.
+    """
+    cfg = config or EngineConfig()
+    rng = np.random.default_rng(seed)
+    train_idx, test_idx = [], []
+    for d in dataset.diseases:
+        rows = rng.permutation(np.where(dataset.y == d)[0])
+        n_test = int(len(rows) * test_fraction) if len(rows) >= 3 else 0
+        test_idx += list(rows[:n_test])
+        train_idx += list(rows[n_test:])
+    if not test_idx:
+        return {"performed": False, "note": "Too few cases per disease to hold out a test set."}
+
+    sub = LoadedDataset(**{**dataset.__dict__, "X": dataset.X[train_idx], "y": dataset.y[train_idx]})
+    engine = NSCAEngine(sub, cfg, esoinn_config)
+    counts = Counter()
+    correct = 0
+    for r in test_idx:
+        syms = [dataset.symptoms[k] for k in np.where(dataset.X[r] == 1)[0]]
+        res = engine.identify(syms)
+        counts[res.outcome] += 1
+        if res.outcome == KNOWN and res.disease == dataset.y[r]:
+            correct += 1
+    n_test = len(test_idx)
+    n_known = counts[KNOWN]
     return {
-        "outcome": outcome,
-        "disease": disease,
-        "explanation": {
-            "observed_symptoms": [KNOWN_CONCEPTS[s] for s in symptoms],
-            "supporting_evidence": support,
-            "missing_information": missing,
-            "cluster_id": MODEL.cluster_id(node_id),
-            "reasoning_summary": summary
-        },
-        "review_required": review
+        "performed": True, "n_train": len(train_idx), "n_test": n_test,
+        "known_pattern": counts[KNOWN], "potentially_novel_pattern": counts[NOVEL],
+        "inconclusive": counts[INCONCLUSIVE],
+        "known_pattern_accuracy": round(correct / n_known, 4) if n_known else None,
+        "coverage": round(n_known / n_test, 4),
+        "note": "Held-out split of the same dataset; not clinical validation.",
     }
