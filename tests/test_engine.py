@@ -1,7 +1,7 @@
 import numpy as np
 
 from dataset_loader import load_dataset
-from engine import INCONCLUSIVE, KNOWN, NOVEL, NSCAEngine, evaluate_holdout
+from engine import INCONCLUSIVE, KNOWN, NOVEL, EngineConfig, NSCAEngine, evaluate_holdout
 from esoinn import ESOINN
 from extractor import extract_symptoms
 from fixtures import CORES, write_synthetic_csv
@@ -9,7 +9,8 @@ from fixtures import CORES, write_synthetic_csv
 
 def build(tmp_path):
     ds = load_dataset(write_synthetic_csv(tmp_path / "s.csv"), tmp_path / "processed")
-    return ds, NSCAEngine(ds)
+    # The tiny synthetic fixture has few rows per prototype, so associate at cluster level here.
+    return ds, NSCAEngine(ds, EngineConfig(association_level="cluster", min_support=5))
 
 
 def test_esoinn_finds_separate_clusters():
@@ -64,7 +65,9 @@ def test_never_returns_more_than_one_disease(tmp_path):
 
 def test_holdout_evaluation_runs(tmp_path):
     ds, _ = build(tmp_path)
-    ev = evaluate_holdout(ds)
+    ev = evaluate_holdout(ds, EngineConfig(association_level="cluster", min_support=5))
+    part = evaluate_holdout(ds, EngineConfig(association_level="cluster", min_support=5), partial_k=3)
+    assert part["performed"] and part["n_test"] == ev["n_test"]
     assert ev["performed"] and ev["n_test"] > 0
     assert ev["known_pattern"] + ev["potentially_novel_pattern"] + ev["inconclusive"] == ev["n_test"]
 
@@ -74,3 +77,13 @@ def test_extractor_matches_and_negates():
     matched, negated = extract_symptoms("I have a high fever and a bad cough, but no skin rash.", feats)
     assert matched == ["high_fever", "cough"] and negated == ["skin_rash"]
     assert extract_symptoms("feeling fine", feats) == ([], [])
+
+
+def test_closest_association_only_on_non_known(tmp_path):
+    _, eng = build(tmp_path)
+    known = eng.identify([f"sym_{k:02d}" for k in CORES["disease_b"]])
+    assert known.outcome == KNOWN and known.closest is None
+    weak = eng.identify(["sym_00", "sym_05"])
+    assert weak.outcome != KNOWN
+    assert weak.closest is None or (isinstance(weak.closest["disease"], str) and 0 < weak.closest["similarity"] <= 1)
+    assert eng.identify(["not_a_symptom"]).closest is None

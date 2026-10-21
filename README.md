@@ -45,6 +45,7 @@ Environment variables: `NSCA_DATASET_PATH`, `NSCA_PROCESSED_DIR`, `NSCA_CORS_ORI
 ## Endpoints
 - `GET /health`
 - `GET /model/status`
+- `GET /symptoms` list of the dataset's symptom names (for a picker)
 - `POST /symptoms/extract` `{description}`
 - `POST /identify` `{description, duration?, severity?, symptoms?}` returns one outcome:
   `known_pattern` (one disease association plus evidence), `potentially_novel_pattern`
@@ -58,6 +59,18 @@ Feedback storage (`storage.py`, `/feedback`) is not built yet.
 pytest
 ```
 Tests use generated placeholder data (`tests/fixtures.py`), never real disease data.
+
+## How disease association works
+ESOINN is unsupervised. On the real 304-case dataset its density-based clustering merges everything into
+2 clusters (one holds 293 cases at about 3% purity), so clusters cannot name a disease. Disease
+association is therefore attached to ESOINN's prototype nodes (`EngineConfig.association_level = "node"`).
+A prototype names a disease only if it has at least `min_support` cases and at least `purity_threshold`
+of them share one disease. Set `association_level="cluster"` to use ESOINN's own clusters instead.
+
+Held-out check on the real dataset (45 test cases, one split, not clinical validation): with full symptom
+lists 19 known / 17 unfamiliar / 9 inconclusive, every known result correct; with only 3 random symptoms
+8 known / 12 unfamiliar / 25 inconclusive, every known result correct. Many correct-disease cases are
+flagged unfamiliar or inconclusive, so treat coverage as low.
 
 ## Known limitations
 - The held-out evaluation uses full symptom vectors from the same dataset. It does not measure

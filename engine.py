@@ -66,6 +66,7 @@ class Identification:
     similarity_threshold: Optional[float] = None
     explanation: str = ""
     human_review_required: bool = False
+    closest: Optional[dict] = None   # weak single nearest dataset case, only on non-known outcomes
 
 
 class NSCAEngine:
@@ -119,6 +120,40 @@ class NSCAEngine:
 
     # ---------- identification ----------
     def identify(self, symptoms: Iterable[str]) -> Identification:
+        res = self._identify_core(symptoms)
+        if res.outcome != KNOWN and res.observed_symptoms:
+            res.closest = self._closest_case(res.observed_symptoms)
+        return res
+
+    def _closest_case(self, observed: list[str]) -> Optional[dict]:
+        """Single nearest disease by symptom overlap (Jaccard) with any dataset case.
+
+        A weak, exploratory hint, NOT a supported result and not a ranking: only the top
+        disease is returned, with a flag saying whether other diseases fit equally well.
+        """
+        ds = self.dataset
+        x = vectorize(observed, self.symptom_index)
+        X = ds.X.astype(np.float64)
+        inter = X @ x
+        jac = inter / (X.sum(axis=1) + x.sum() - inter)
+        best = float(jac.max())
+        if best <= 0:
+            return None
+        top_rows = np.where(np.isclose(jac, best))[0]
+        diseases = sorted({str(ds.y[r]) for r in top_rows})
+        # deterministic pick: the disease with the most tied cases, then alphabetical
+        disease = max(diseases, key=lambda d: (sum(1 for r in top_rows if ds.y[r] == d), [-ord(c) for c in d]))
+        row = next(r for r in top_rows if ds.y[r] == disease)
+        case_syms = {ds.symptoms[k] for k in np.where(ds.X[row] == 1)[0]}
+        return {
+            "disease": disease,
+            "similarity": round(best, 3),
+            "matched_symptoms": [o for o in observed if o in case_syms],
+            "closest_case_size": len(case_syms),
+            "tied": len(diseases) > 1,
+        }
+
+    def _identify_core(self, symptoms: Iterable[str]) -> Identification:
         names = list(dict.fromkeys(normalise_symptom(s) for s in symptoms if s and s.strip()))
         observed = [s for s in names if s in self.symptom_index]
         unknown = [s for s in names if s not in self.symptom_index]

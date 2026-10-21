@@ -75,6 +75,14 @@ class Evidence(BaseModel):
     similarity_threshold: Optional[float] = None
 
 
+class ClosestAssociation(BaseModel):
+    disease: str
+    similarity: float            # Jaccard overlap with the closest dataset case, 0 to 1
+    matched_symptoms: list[str]
+    closest_case_size: int
+    tied: bool                   # true if other diseases fit equally well
+
+
 class IdentifyResponse(BaseModel):
     outcome: Outcome
     reason_code: str
@@ -84,6 +92,7 @@ class IdentifyResponse(BaseModel):
     cluster_id: Optional[int] = None
     node_id: Optional[int] = None
     evidence: Evidence
+    closest_association: Optional[ClosestAssociation] = None
     explanation: str
     human_review_required: bool
     duration: Optional[str] = None

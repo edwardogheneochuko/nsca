@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from dataset_loader import DatasetError, load_dataset
 from engine import NSCAEngine, evaluate_holdout
 from extractor import extract_symptoms
-from schemas import (Evidence, HealthResponse, IdentifyRequest, IdentifyResponse,
+from schemas import (ClosestAssociation, Evidence, HealthResponse, IdentifyRequest, IdentifyResponse,
                      ModelStatusResponse, SymptomExtractRequest, SymptomExtractResponse,
                      SymptomListResponse)
 
@@ -109,6 +109,7 @@ def create_app(original_path: str | None = None, processed_dir: str | None = Non
             evidence=Evidence(matched_symptoms=r.matched_symptoms, typical_symptoms=r.typical_symptoms,
                               cluster_support=r.cluster_support, cluster_purity=r.cluster_purity,
                               distance=r.distance, similarity_threshold=r.similarity_threshold),
+            closest_association=ClosestAssociation(**r.closest) if r.closest else None,
             explanation=r.explanation, human_review_required=r.human_review_required,
             duration=body.duration, severity=body.severity,
             urgent_care_notice=URGENT_SEVERE if body.severity == "severe" else URGENT,

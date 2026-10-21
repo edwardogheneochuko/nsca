@@ -20,15 +20,6 @@ def test_health_and_status(client):
     assert s["evaluation"]["performed"] is True
 
 
-def test_symptom_list_endpoint(client):
-    r = client.get("/symptoms")
-    assert r.status_code == 200
-    body = r.json()
-    assert isinstance(body["symptoms"], list)
-    assert body["symptoms"]
-    assert "sym_00" in body["symptoms"]
-
-
 def test_extract_and_identify(client):
     r = client.post("/symptoms/extract", json={"description": "I have sym 00 and sym 01 but no sym 02"})
     assert r.json() == {"matched_symptoms": ["sym_00", "sym_01"], "negated_symptoms": ["sym_02"]}
@@ -55,3 +46,10 @@ def test_503_when_dataset_missing(tmp_path):
         r = c.get("/model/status")
         assert r.status_code == 503 and "not found" in r.json()["detail"]
         assert c.post("/identify", json={"description": "cough"}).status_code == 503
+
+
+def test_symptom_list_and_explicit_symptoms(client):
+    names = client.get("/symptoms").json()["symptoms"]
+    assert "sym_00" in names and names == sorted(names)
+    body = client.post("/identify", json={"description": "picked", "symptoms": ["sym_05", "sym_06", "sym_07"]}).json()
+    assert body["observed_symptoms"] == ["sym_05", "sym_06", "sym_07"]
