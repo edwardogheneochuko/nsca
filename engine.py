@@ -34,7 +34,8 @@ class EngineConfig:
     epochs: int = 5
     seed: int = 42
     min_symptoms: int = 2            # fewer recognised symptoms -> inconclusive
-    min_cluster_support: int = 5     # training rows a cluster needs to name a disease
+    association_level: str = "node"  # "node" (prototype) or "cluster" (ESOINN subclass)
+    min_support: int = 3             # training rows a prototype/cluster needs to name a disease
     purity_threshold: float = 0.8    # share of a cluster's rows that must be one disease
     ambiguity_margin: float = 0.10   # runner-up cluster this close, different disease -> inconclusive
     typical_symptom_share: float = 0.5
@@ -75,7 +76,7 @@ class NSCAEngine:
         self.esoinn_cfg = esoinn_config or ESOINNConfig()
         self.model = ESOINN(self.esoinn_cfg)
         self.profiles: dict[int, ClusterProfile] = {}
-        self.cluster_threshold: dict[int, float] = {}
+        self.thresholds: dict[int, float] = {}
         self.symptom_index = dataset.symptom_index
         self.evaluation: Optional[dict] = None
         self._train(dataset.X, dataset.y)
@@ -84,22 +85,27 @@ class NSCAEngine:
     def _train(self, X: np.ndarray, y: np.ndarray) -> None:
         Xf = X.astype(np.float64)
         self.model.fit(Xf, epochs=self.cfg.epochs, seed=self.cfg.seed)
-        by_cluster: dict[int, list[int]] = {}
+        by_key: dict[int, list[int]] = {}
         for r in range(len(Xf)):
             nid, _, _, _ = self.model.nearest_two(Xf[r])
-            by_cluster.setdefault(self.model.nodes[nid].label, []).append(r)
+            by_key.setdefault(self._key(nid), []).append(r)
         symptoms = self.dataset.symptoms
-        for label, rows in by_cluster.items():
+        for key, rows in by_key.items():
             counts = Counter(y[rows])
             disease, n_dom = counts.most_common(1)[0]
             disease = str(disease)
             dom_rows = [r for r in rows if y[r] == disease]
             share = Xf[dom_rows].mean(axis=0)
             typical = [symptoms[k] for k in np.where(share >= self.cfg.typical_symptom_share)[0]]
-            self.profiles[label] = ClusterProfile(disease, len(rows), n_dom / len(rows), typical)
-        for label in {n.label for n in self.model.nodes.values()}:
-            self.cluster_threshold[label] = max(
-                self.model.similarity_threshold(i) for i, n in self.model.nodes.items() if n.label == label)
+            self.profiles[key] = ClusterProfile(disease, len(rows), n_dom / len(rows), typical)
+        for nid in self.model.nodes:
+            k = self._key(nid)
+            t = self.model.similarity_threshold(nid)
+            self.thresholds[k] = t if self.cfg.association_level == "node" else max(self.thresholds.get(k, 0.0), t)
+
+    def _key(self, nid: int) -> int:
+        """Unit that carries a disease association: the prototype node, or its ESOINN cluster."""
+        return nid if self.cfg.association_level == "node" else self.model.nodes[nid].label
 
     def status(self) -> dict:
         return {
@@ -127,7 +133,7 @@ class NSCAEngine:
         x = vectorize(observed, self.symptom_index)
         n1, n2, d1, d2 = self.model.nearest_two(x)
         node = self.model.nodes[n1]
-        t1 = self.cluster_threshold[node.label]
+        t1 = self.thresholds[self._key(n1)]
         base = dict(observed_symptoms=observed, unrecognised_symptoms=unknown,
                     cluster_id=node.label, node_id=n1, distance=round(d1, 4),
                     similarity_threshold=round(t1, 4))
@@ -140,12 +146,12 @@ class NSCAEngine:
                              "This is not evidence of a new disease; it is flagged for human review."),
             )
 
-        prof = self.profiles.get(node.label)
-        if prof is None or prof.support < self.cfg.min_cluster_support:
+        prof = self.profiles.get(self._key(n1))
+        if prof is None or prof.support < self.cfg.min_support:
             return Identification(
                 INCONCLUSIVE, "weak_support", None, **base, cluster_support=prof.support if prof else 0,
                 explanation=(f"The closest learned pattern is backed by too few dataset cases "
-                             f"(minimum {self.cfg.min_cluster_support}) to associate it with a disease."),
+                             f"(minimum {self.cfg.min_support}) to associate it with a disease."),
             )
         if prof.purity < self.cfg.purity_threshold:
             return Identification(
@@ -154,7 +160,7 @@ class NSCAEngine:
                 explanation=("The closest learned pattern is shared by several diseases in the dataset, so "
                              "no single disease is supported."),
             )
-        p2 = self.profiles.get(self.model.nodes[n2].label) if n2 is not None else None
+        p2 = self.profiles.get(self._key(n2)) if n2 is not None else None
         if p2 is not None and p2.disease != prof.disease and d2 <= d1 * (1 + self.cfg.ambiguity_margin):
             return Identification(
                 INCONCLUSIVE, "ambiguous_match", None, **base, cluster_support=prof.support,
@@ -176,7 +182,7 @@ class NSCAEngine:
 
 def evaluate_holdout(dataset: LoadedDataset, config: EngineConfig | None = None,
                      esoinn_config: ESOINNConfig | None = None, test_fraction: float = 0.2,
-                     seed: int = 7) -> dict:
+                     seed: int = 7, partial_k: int | None = None) -> dict:
     """Train on a stratified split and score on the held-out rows (full symptom vectors).
 
     Internal sanity check on dataset-derived data only. It is not clinical validation and
@@ -198,7 +204,10 @@ def evaluate_holdout(dataset: LoadedDataset, config: EngineConfig | None = None,
     counts = Counter()
     correct = 0
     for r in test_idx:
-        syms = [dataset.symptoms[k] for k in np.where(dataset.X[r] == 1)[0]]
+        ks = np.where(dataset.X[r] == 1)[0]
+        if partial_k is not None and len(ks) > partial_k:
+            ks = rng.choice(ks, size=partial_k, replace=False)
+        syms = [dataset.symptoms[k] for k in ks]
         res = engine.identify(syms)
         counts[res.outcome] += 1
         if res.outcome == KNOWN and res.disease == dataset.y[r]:
