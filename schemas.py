@@ -55,6 +55,10 @@ class SymptomExtractResponse(BaseModel):
     negated_symptoms: list[str]
 
 
+class SymptomListResponse(BaseModel):
+    symptoms: list[str]
+
+
 class IdentifyRequest(BaseModel):
     description: str = Field(min_length=1, max_length=2000)
     duration: Optional[str] = Field(default=None, max_length=100)
