@@ -1,0 +1,95 @@
+[ddxplus] 3000/14236
+[ddxplus] 6000/14236
+[ddxplus] 9000/14236
+[ddxplus] 12000/14236
+{
+ "dataset": "ddxplus",
+ "test_patients": 14236,
+ "known_test_patients": 13336,
+ "heldout_test_patients": 900,
+ "heldout_diseases": [
+  "Acute otitis media",
+  "Panic attack",
+  "Pulmonary embolism"
+ ],
+ "stage1": {
+  "nodes": 715,
+  "clusters": 45,
+  "true_diseases": 46,
+  "diseases_recovered_as_cluster_majority": 40,
+  "ARI": 0.8807,
+  "NMI": 0.9619,
+  "purity": 0.8979,
+  "outlier_rate": 0.0652,
+  "ARI_non_outliers": 0.9014,
+  "noise_buffer_patients": 1681,
+  "outlier_rate_known": 0.0652,
+  "outlier_rate_heldout": 1.0
+ },
+ "stage2": {
+  "fidelity_validation": 0.99067956583294,
+  "cart_esoinn_agreement_test": 0.9312,
+  "reliable_rate_known": 0.9297,
+  "reliable_rate_heldout": 0.0
+ },
+ "stage3": {
+  "known_accuracy": 0.9194,
+  "known_accuracy_when_not_flagged": 0.9643,
+  "true_disease_in_top3": 0.9878,
+  "false_new_rate_known": 0.0466,
+  "heldout_flagged_as_new": 0.8578,
+  "accuracy_by_confidence": {
+   "high": {
+    "n": 11157,
+    "accuracy": 0.9739
+   },
+   "medium": {
+    "n": 749,
+    "accuracy": 0.8798
+   },
+   "low": {
+    "n": 809,
+    "accuracy": 0.9098
+   }
+  },
+  "variant_stage1_outlier_and_unreliable_also_flags": {
+   "false_new_rate_known": 0.103,
+   "heldout_flagged_as_new": 1.0
+  },
+  "per_heldout_disease": {
+   "Acute otitis media": {
+    "patients": 300,
+    "flagged": 0.58,
+    "flagged_cases_spread_over_clusters": 11,
+    "most_common_wrong_known_diagnosis": [
+     [
+      "Acute rhinosinusitis",
+      43
+     ],
+     [
+      "Acute laryngitis",
+      40
+     ]
+    ]
+   },
+   "Panic attack": {
+    "patients": 300,
+    "flagged": 1.0,
+    "flagged_cases_spread_over_clusters": 10,
+    "most_common_wrong_known_diagnosis": []
+   },
+   "Pulmonary embolism": {
+    "patients": 300,
+    "flagged": 0.9933,
+    "flagged_cases_spread_over_clusters": 5,
+    "most_common_wrong_known_diagnosis": [
+     [
+      "Localized edema",
+      2
+     ]
+    ]
+   }
+  },
+  "ddxplus_top3_candidates_in_patient_differential": 0.5796
+ }
+}

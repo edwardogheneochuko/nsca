@@ -1,0 +1,7 @@
+[mendeley] Stage 1: ESOINN on 23008 streamed patients, 188 features
+[mendeley]   {'nodes': 799, 'clusters': 37, 'true_diseases': 40, 'diseases_recovered_as_cluster_majority': 36, 'ARI': 0.847, 'NMI': 0.9586, 'purity': 0.8953, 'outlier_rate': 0.0599, 'ARI_non_outliers': 0.8532, 'noise_buffer_patients': 973}
+[mendeley] Stage 2: surrogate, exemplars
+[mendeley]   fidelity=0.9584 leaves=654
+[mendeley] Stage 3: HPO grounding, knowledge base, calibration
+[mendeley]   grounded methods={'curated': 107, 'exact': 60, 'no fitting HPO term': 21} thresholds={'min_score': 0.3436, 'min_core_coverage': 0.25, 'max_excluding': 0, 'max_unexplained': 0.0}
+[mendeley] saved to /home/claude/backend/models/mendeley in 60.0 s

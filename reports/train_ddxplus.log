@@ -1,0 +1,7 @@
+[ddxplus] Stage 1: ESOINN on 33904 streamed patients, 497 features
+[ddxplus]   {'nodes': 715, 'clusters': 45, 'true_diseases': 46, 'diseases_recovered_as_cluster_majority': 40, 'ARI': 0.9036, 'NMI': 0.9716, 'purity': 0.918, 'outlier_rate': 0.0513, 'ARI_non_outliers': 0.9109, 'noise_buffer_patients': 1681}
+[ddxplus] Stage 2: surrogate, exemplars
+[ddxplus]   fidelity=0.9907 leaves=312
+[ddxplus] Stage 3: HPO grounding, knowledge base, calibration
+[ddxplus]   grounded methods={'curated': 369, 'antecedent (not a phenotype)': 123, 'context (not a phenotype)': 5} thresholds={'min_score': 0.5704, 'min_core_coverage': 0.5, 'max_excluding': 0, 'max_unexplained': 0.0}
+[ddxplus] saved to /home/claude/backend/models/ddxplus in 112.3 s

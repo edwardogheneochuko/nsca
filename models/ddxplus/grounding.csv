@@ -1,0 +1,498 @@
+feature,meaning,hpo_id,hpo_label,method,review_suggestion,suggestion_id,suggestion_score,term
+E_0,Have you recently had a viral infection?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_0
+E_1,Are you currently being treated or have you recently been treated with an oral antibiotic for an ear infection?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_1
+E_10,Are you currently taking or have you recently taken anti-inflammatory drugs (NSAIDs)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_10
+E_100,Do you currently take hormones?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_100
+E_101,Have you been hospitalized for an asthma attack in the past year?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_101
+E_102,Are you consulting because you have high blood pressure?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_102
+E_103,Have you lost your sense of smell?,HP:0000458,Anosmia,curated,,,,HP:0000458
+E_104,Do you have high blood pressure or do you take medications to treat high blood pressure?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_104
+E_105,Have you ever had a heart attack or do you have angina (chest pain)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_105
+E_106,Do you have heart failure?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_106
+E_107,Have you ever had a stroke?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_107
+E_108,Do you have a problem with poor circulation?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_108
+E_109,Have you ever had deep vein thrombosis (DVT)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_109
+E_11,Have you breastfed one of your children for more than 9 months?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_11
+E_110,Have you been unable to move or get up for more than 3 consecutive days within the last 4 weeks?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_110
+E_111,Do you feel like you are dying or were you afraid that you were about do die?,HP:0000739,Anxiety,curated,,,,HP:0000739
+E_112,Do you wheeze while inhaling or is your breathing noisy after coughing spells?,HP:0030828,Wheezing,curated,,,,HP:0030828
+E_113,Do you have chronic kidney failure?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_113
+E_114,Are you more irritable or has your mood been very unstable recently?,HP:0000737,Irritability,curated,,,,HP:0000737
+E_115,Have you had unprotected sex with more than one partner in the last 6 months?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_115
+E_116,Have you had a cold in the last 2 weeks?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_116
+E_118,Have you ever had pneumonia?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_118
+E_119,Have you been diagnosed with chronic sinusitis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_119
+E_12,Do you have a known severe food allergy?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_12
+E_120,Do you have polyps in your nose?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_120
+E_121,Do you have a deviated nasal septum?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_121
+E_123,Do you have a chronic obstructive pulmonary disease (COPD)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_123
+E_124,Do you have asthma or have you ever had to use a bronchodilator in the past?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_124
+E_125,Have you ever been diagnosed with gastroesophageal reflux?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_125
+E_126,Do you have liver cirrhosis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_126
+E_127,Do you feel that your eyes produce excessive tears?,HP:0009926,Epiphora,curated,,,,HP:0009926
+E_128,Have you ever felt like you were suffocating for a very short time associated with inability to breathe or speak?,HP:0025425,Laryngospasm,curated,,,,HP:0025425
+E_129,"Do you have any lesions, redness or problems on your skin that you believe are related to the condition you are consulting for?",HP:0000988,Skin rash,curated,,,,HP:0000988
+E_13,Do you find that your symptoms have worsened over the last 2 weeks and that progressively less effort is required to cause the symptoms?,,,context (not a phenotype),Progressive neurologic deterioration,HP:0002344,0.387,LOCAL:E_13
+E_130=V_107,What color is the rash? = yellow,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_130=V_11,What color is the rash? = NA,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_130=V_138,What color is the rash? = pale,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_130=V_156,What color is the rash? = pink,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_130=V_157,What color is the rash? = red,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_131=V_10,Do your lesions peel off? = N,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_131=V_12,Do your lesions peel off? = Y,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_132=0,Is the rash swollen? = 0,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_132=1,Is the rash swollen? = 1,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_132=2,Is the rash swollen? = 2,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_132=3,Is the rash swollen? = 3,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_132=4,Is the rash swollen? = 4,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_132=5,Is the rash swollen? = 5,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_132=6,Is the rash swollen? = 6,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_132=7,Is the rash swollen? = 7,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_108,Where is the affected region located? = cheek(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_109,Where is the affected region located? = cheek(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_110,Where is the affected region located? = internal cheek(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_111,Where is the affected region located? = internal cheek(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_116,Where is the affected region located? = bottom lip(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_117,Where is the affected region located? = upper lip(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_122,Where is the affected region located? = nose,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_123,Where is the affected region located? = nowhere,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_137,Where is the affected region located? = palace,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_146,Where is the affected region located? = labia minora(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_147,Where is the affected region located? = labia minora(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_155,Where is the affected region located? = penis,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_158,Where is the affected region located? = scrotum,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_162,Where is the affected region located? = under the tongue,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_170,Where is the affected region located? = posterior chest wall(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_171,Where is the affected region located? = posterior chest wall(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_187,Where is the affected region located? = belly,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_194,Where is the affected region located? = shoulder(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_195,Where is the affected region located? = shoulder(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_197,Where is the affected region located? = epigastric,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_26,Where is the affected region located? = back of the neck,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_27,Where is the affected region located? = forearm(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_28,Where is the affected region located? = forearm(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_30,Where is the affected region located? = biceps(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_31,Where is the affected region located? = biceps(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_32,Where is the affected region located? = mouth,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_33,Where is the affected region located? = thyroid cartilage,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_34,Where is the affected region located? = ankle(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_35,Where is the affected region located? = ankle(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_38,Where is the affected region located? = cervical spine,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_39,Where is the affected region located? = thoracic spine,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_40,Where is the affected region located? = lumbar spine,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_41,Where is the affected region located? = commissure(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_42,Where is the affected region located? = commissure(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_51,Where is the affected region located? = thigh(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_52,Where is the affected region located? = thigh(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_53,Where is the affected region located? = side of the neck(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_54,Where is the affected region located? = side of the neck(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_82,Where is the affected region located? = buttock(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_83,Where is the affected region located? = buttock(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_84,Where is the affected region located? = flank(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_85,Where is the affected region located? = flank(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_87,Where is the affected region located? = iliac fossa(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_88,Where is the affected region located? = iliac fossa(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_89,Where is the affected region located? = forehead,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_90,Where is the affected region located? = lower gum,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_91,Where is the affected region located? = upper gum,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_95,Where is the affected region located? = labia majora(R),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_133=V_96,Where is the affected region located? = labia majora(L),HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=0,How intense is the pain caused by the rash? = 0,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=1,How intense is the pain caused by the rash? = 1,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=2,How intense is the pain caused by the rash? = 2,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=3,How intense is the pain caused by the rash? = 3,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=4,How intense is the pain caused by the rash? = 4,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=5,How intense is the pain caused by the rash? = 5,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=6,How intense is the pain caused by the rash? = 6,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=7,How intense is the pain caused by the rash? = 7,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_134=8,How intense is the pain caused by the rash? = 8,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_135=V_10,Is the lesion (or are the lesions) larger than 1cm? = N,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_135=V_12,Is the lesion (or are the lesions) larger than 1cm? = Y,HP:0000988,Skin rash,curated,,,,HP:0000988
+E_136=0,How severe is the itching? = 0,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=1,How severe is the itching? = 1,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=10,How severe is the itching? = 10,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=2,How severe is the itching? = 2,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=3,How severe is the itching? = 3,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=4,How severe is the itching? = 4,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=5,How severe is the itching? = 5,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=6,How severe is the itching? = 6,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=7,How severe is the itching? = 7,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=8,How severe is the itching? = 8,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_136=9,How severe is the itching? = 9,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_137,Have you ever had surgery to remove lymph nodes?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_137
+E_138,Do you suffer from fibromyalgia?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_138
+E_139,Do you have a known heart defect?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_139
+E_14,Do you have chest pain even at rest?,HP:0100749,Chest pain,curated,,,,HP:0100749
+E_140,Have you recently had stools that were black (like coal)?,HP:0002249,Melena,curated,,,,HP:0002249
+E_141,Did you have your first menstrual period before the age of 12?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_141
+E_142,Does your mother suffer from asthma?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_142
+E_143,"Do you exercise regularly, 4 times per week or more?",,,antecedent (not a phenotype),,,0.0,LOCAL:E_143
+E_144,Do you have diffuse (widespread) muscle pain?,HP:0003326,Myalgia,curated,,,,HP:0003326
+E_145,Do you have very abundant or very long menstruation periods?,HP:0000132,Menorrhagia,curated,,,,HP:0000132
+E_146,Are you taking any new oral anticoagulants ((NOACs)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_146
+E_147,"Have you been treated in hospital recently for nausea, agitation, intoxication or aggressive behavior and received medication via an intravenous or intramuscular route?",,,antecedent (not a phenotype),,,0.0,LOCAL:E_147
+E_148,Are you feeling nauseous or do you feel like vomiting?,HP:0002018,Nausea,curated,,,,HP:0002018
+E_149,Do you take a calcium channel blockers (medication)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_149
+E_15,Have you started or taken any antipsychotic medication within the last 7 days?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_15
+E_150,Have you been able to pass stools or gas since your symptoms increased?,,,context (not a phenotype),Atypical behavior,HP:0000708,0.324,LOCAL:E_150
+E_151,Do you have swelling in one or more areas of your body?,HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_108,Where is the swelling located? = cheek(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_109,Where is the swelling located? = cheek(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_119,Where is the swelling located? = calf(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_120,Where is the swelling located? = calf(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_122,Where is the swelling located? = nose,HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_123,Where is the swelling located? = nowhere,HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_131,Where is the swelling located? = toe (1)(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_149,Where is the swelling located? = sole(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_150,Where is the swelling located? = sole(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_172,Where is the swelling located? = tibia(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_173,Where is the swelling located? = tibia(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_23,Where is the swelling located? = posterior aspect of the ankle(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_24,Where is the swelling located? = posterior aspect of the ankle(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_34,Where is the swelling located? = ankle(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_35,Where is the swelling located? = ankle(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_43,Where is the swelling located? = lateral side of the foot(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_44,Where is the swelling located? = lateral side of the foot(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_51,Where is the swelling located? = thigh(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_52,Where is the swelling located? = thigh(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_72,Where is the swelling located? = dorsal aspect of the foot(R),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_73,Where is the swelling located? = dorsal aspect of the foot(L),HP:0000969,Edema,curated,,,,HP:0000969
+E_152=V_89,Where is the swelling located? = forehead,HP:0000969,Edema,curated,,,,HP:0000969
+E_153,Are you being treated for osteoporosis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_153
+E_154,Is your skin much paler than usual?,HP:0000980,Pallor,curated,,,,HP:0000980
+E_155,"Do you feel your heart is beating fast (racing), irregularly (missing a beat) or do you feel palpitations?",HP:0001962,Palpitations,curated,,,,HP:0001962
+E_156,"Have you had weakness or paralysis on one side of the face, which may still be present or completely resolved?",HP:0012799,Unilateral facial palsy,curated,,,,HP:0012799
+E_157,"Have you recently had numbness, loss of sensation or tingling, in both arms and legs and around your mouth?",HP:0003401,Paresthesia,curated,,,,HP:0003401
+E_158,Were you diagnosed with endocrine disease or a hormone dysfunction?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_158
+E_159,Did you lose consciousness?,HP:0001279,Syncope,curated,,,,HP:0001279
+E_16,Do you feel anxious?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_16
+E_160,Were you born prematurely or did you suffer any complication at birth?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_160
+E_161,Have you recently had a loss of appetite or do you get full more quickly then usually?,HP:0004396,Poor appetite,curated,,,,HP:0004396
+E_162,Have you had an involuntary weight loss over the last 3 months?,HP:0001824,Weight loss,curated,,,,HP:0001824
+E_163,Have you had any vaginal discharge?,HP:0034269,Abnormal vaginal discharge,curated,,,,HP:0034269
+E_164,Do you feel your heart is beating very irregularly or in a disorganized pattern?,HP:0011675,Arrhythmia,curated,,,,HP:0011675
+E_165,Have any of your family members ever had a pneumothorax?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_165
+E_166,Did you vomit after coughing?,HP:0002013,Vomiting,curated,,,,HP:0002013
+E_167,Do you think you are pregnant or are you currently pregnant?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_167
+E_168,Do you have trouble keeping your tongue in your mouth?,HP:0100703,Tongue thrusting,curated,,,,HP:0100703
+E_169,Is your nose or the back of your throat itchy?,HP:0000989,Pruritus,curated,,,,HP:0000989
+E_17,Are you of Asian descent?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_17
+E_170,Do you have severe itching in one or both eyes?,HP:0033841,Ocular pruritus,curated,,,,HP:0033841
+E_171,Do you feel like you are detached from your own body or your surroundings?,HP:5200217,Depersonalization,curated,,,,HP:5200217
+E_172,Do you have a hard time opening/raising one or both eyelids?,HP:0000508,Ptosis,curated,,,,HP:0000508
+E_173,"Do you have a burning sensation that starts in your stomach then goes up into your throat, and can be associated with a bitter taste in your mouth?",HP:0002020,Gastroesophageal reflux,curated,,,,HP:0002020
+E_174,Have you been unintentionally losing weight or have you lost your appetite?,HP:0001824,Weight loss,curated,,,,HP:0001824
+E_175,"Have you noticed any new fatigue, generalized and vague discomfort, diffuse (widespread) muscle aches or a change in your general well-being related to your consultation today?",HP:0033834,Malaise,curated,,,,HP:0033834
+E_176,"Did you previously, or do you currently, have any weakness/paralysis in one or more of your limbs or in your face?",HP:0001269,Hemiparesis,curated,,,,HP:0001269
+E_177,"Do you currently, or did you ever, have numbness, loss of sensitivity or tingling anywhere on your body?",HP:0003401,Paresthesia,curated,,,,HP:0003401
+E_178,Have you noticed any unusual bleeding or bruising related to your consultation today?,HP:0000978,Bruising susceptibility,curated,,,,HP:0000978
+E_179,Have you noticed light red blood or blood clots in your stool?,HP:0002573,Hematochezia,curated,,,,HP:0002573
+E_18,Do you have cystic fibrosis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_18
+E_180,Are you unable to control the direction of your eyes?,HP:0010553,Oculogyric crisis,curated,,,,HP:0010553
+E_181,Do you have nasal congestion or a clear runny nose?,HP:0031417,Rhinorrhea,curated,,,,HP:0031417
+E_182,Do you have greenish or yellowish nasal discharge?,HP:0031417,Rhinorrhea,curated,,,,HP:0031417
+E_183,Do you live in a rural area?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_183
+E_184,Do you take medication that dilates your blood vessels?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_184
+E_185,Have you ever had a head trauma?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_185
+E_186,Have you ever been diagnosed with obstructive sleep apnea (OSA)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_186
+E_187,Did you eat dark-fleshed fish (such as tuna) or Swiss cheese before the reaction occurred?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_187
+E_188,Do you have pale stools and dark urine?,HP:0011985,Acholic stools,curated,,,,HP:0011985
+E_189,Have you had sexual intercourse with an HIV-positive partner in the past 12 months?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_189
+E_19,Have you been diagnosed with hyperthyroidism?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_19
+E_190,Have you noticed that you produce more saliva than usual?,HP:0002307,Drooling,curated,,,,HP:0002307
+E_191,Are you a former smoker?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_191
+E_192,Do you feel that muscle spasms or soreness in your neck are keeping you from turning your head to one side?,HP:0000473,Torticollis,curated,,,,HP:0000473
+E_193,"Do you have annoying muscle spasms in your face, neck or any other part of your body?",HP:0003394,Muscle spasm,curated,,,,HP:0003394
+E_194,Have you noticed a high pitched sound when breathing in?,HP:0005348,Inspiratory stridor,curated,,,,HP:0005348
+E_195,Do you live in the suburbs?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_195
+E_196,Have you had surgery within the last month?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_196
+E_197,Do you have a known kidney problem resulting in an inability to retain proteins?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_197
+E_198,Do you work in agriculture?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_198
+E_199,Do you work in construction?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_199
+E_2,Are you infected with the human immunodeficiency virus (HIV)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_2
+E_20,Do you have Rheumatoid Arthritis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_20
+E_200,Do you work in the mining sector?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_200
+E_201,Do you have a cough?,HP:0012735,Cough,curated,,,,HP:0012735
+E_202,Does the person have a whooping cough?,HP:0012735,Cough,curated,,,,HP:0012735
+E_203,Do you have intense coughing fits?,HP:0012735,Cough,curated,,,,HP:0012735
+E_204=V_0,Have you traveled out of the country in the last 4 weeks? = North Africa,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_0
+E_204=V_1,Have you traveled out of the country in the last 4 weeks? = West Africa,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_1
+E_204=V_10,Have you traveled out of the country in the last 4 weeks? = N,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_10
+E_204=V_2,Have you traveled out of the country in the last 4 weeks? = South Africa,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_2
+E_204=V_3,Have you traveled out of the country in the last 4 weeks? = Central America,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_3
+E_204=V_4,Have you traveled out of the country in the last 4 weeks? = North America,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_4
+E_204=V_5,Have you traveled out of the country in the last 4 weeks? = South America,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_5
+E_204=V_6,Have you traveled out of the country in the last 4 weeks? = Asia,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_6
+E_204=V_7,Have you traveled out of the country in the last 4 weeks? = South East Asia,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_7
+E_204=V_8,Have you traveled out of the country in the last 4 weeks? = Caraibes,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_8
+E_204=V_9,Have you traveled out of the country in the last 4 weeks? = Europe,,,antecedent (not a phenotype),,,0.0,LOCAL:E_204=V_9
+E_205,Do you suddenly have difficulty or an inability to open your mouth or have jaw pain when opening it?,HP:0000211,Trismus,curated,,,,HP:0000211
+E_206,Do you have painful mouth ulcers or sores?,HP:0000155,Oral ulcer,curated,,,,HP:0000155
+E_207,Do you live in in a big city?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_207
+E_208,"Is your BMI less than 18.5, or are you underweight?",,,antecedent (not a phenotype),,,0.0,LOCAL:E_208
+E_209,Are your vaccinations up to date?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_209
+E_21,Have you ever had a spontaneous pneumothorax?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_21
+E_210,Have you recently thrown up blood or something resembling coffee beans?,HP:0002248,Hematemesis,curated,,,,HP:0002248
+E_211,Have you vomited several times or have you made several efforts to vomit?,HP:0002013,Vomiting,curated,,,,HP:0002013
+E_212,"Have you noticed that the tone of your voice has become deeper, softer or hoarse?",HP:0001609,Hoarse voice,curated,,,,HP:0001609
+E_213,Have you recently taken decongestants or other substances that may have stimulant effects?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_213
+E_214,Have you noticed a wheezing sound when you exhale?,HP:0030828,Wheezing,curated,,,,HP:0030828
+E_215,Do you have symptoms that get worse after eating?,HP:0002027,Abdominal pain,curated,,,,HP:0002027
+E_216,Do you have pain that is increased with movement?,HP:0012531,Pain,curated,,,,HP:0012531
+E_217,Are your symptoms worse when lying down and alleviated while sitting up?,HP:0012764,Orthopnea,curated,,,,HP:0012764
+E_218,Do you have symptoms that are increased with physical exertion but alleviated with rest?,HP:0003546,Exercise intolerance,curated,,,,HP:0003546
+E_219,Are your symptoms more prominent at night?,,,context (not a phenotype),Status epilepticus with prominent motor symptoms,HP:0032658,0.471,LOCAL:E_219
+E_22,Do you have a known issue with one of your heart valves?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_22
+E_220,Do you have pain that is increased when you breathe in deeply?,HP:0033771,Pleuritic chest pain,curated,,,,HP:0033771
+E_221,"Are the symptoms or pain increased with coughing, with an effort like lifting a weight or from forcing a bowel movement?",,,context (not a phenotype),Painful defecation,HP:6000222,0.337,LOCAL:E_221
+E_222,Are you exposed to secondhand cigarette smoke on a daily basis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_222
+E_223,Are there members of your family who have been diagnosed with pancreatic cancer?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_223
+E_224,Do you have family members who have had lung cancer?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_224
+E_225,Do you have close family members who had a cardiovascular disease problem before the age of 50?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_225
+E_226,Are you more likely to develop common allergies than the general population?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_226
+E_227,Are you immunosuppressed?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_227
+E_23,Do you ever temporarily stop breathing while you’re asleep?,HP:0010535,Sleep apnea,curated,,,,HP:0010535
+E_24,Have you ever had a diagnosis of anemia?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_24
+E_25,Have any of your family members been diagnosed with cluster headaches?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_25
+E_26,Do you have any family members who have been diagnosed with anemia?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_26
+E_27,Have you ever had a sexually transmitted infection?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_27
+E_28,Are there any members of your family who have been diagnosed myasthenia gravis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_28
+E_29,Do any members of your immediate family have a psychiatric illness?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_29
+E_3,Have you ever had a pericarditis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_3
+E_30,Do you feel your abdomen is bloated or distended (swollen due to pressure from inside)?,HP:0003270,Abdominal distention,curated,,,,HP:0003270
+E_31,Do you have severe Chronic Obstructive Pulmonary Disease (COPD)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_31
+E_32,Do you have a decrease in appetite?,HP:0004396,Poor appetite,curated,,,,HP:0004396
+E_33,Do you have pain that improves when you lean forward?,HP:0100749,Chest pain,curated,,,,HP:0100749
+E_34,Do you have an active cancer?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_34
+E_35,Do you regularly drink coffee or tea?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_35
+E_37,Do you have metastatic cancer?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_37
+E_38,Do you have pain or weakness in your jaw?,HP:0040264,Jaw pain,curated,,,,HP:0040264
+E_39,Have you felt confused or disorientated lately?,HP:0001289,Confusion,curated,,,,HP:0001289
+E_4,Have you or any member of your family ever had croup?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_4
+E_40,Have you been in contact with someone who has had pertussis (whoooping cough)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_40
+E_41,Have you been in contact with a person with similar symptoms in the past 2 weeks?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_41
+E_42,Have you been in contact with or ate something that you have an allergy to?,,,context (not a phenotype),Allergy,HP:0012393,0.298,LOCAL:E_42
+E_43,Have you lost consciousness associated with violent and sustained muscle contractions or had an absence episode?,HP:0001250,Seizure,curated,,,,HP:0001250
+E_44,Do you take corticosteroids?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_44
+E_45,Have you been coughing up blood?,HP:0002105,Hemoptysis,curated,,,,HP:0002105
+E_46,Have you had 2 or more asthma attacks in the past year?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_46
+E_47,Do you suffer from Crohn’s disease or ulcerative colitis (UC)?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_47
+E_48,Do you live with 4 or more people?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_48
+E_49,Do you attend or work in a daycare?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_49
+E_5,Have you ever had fluid in your lungs?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_5
+E_50,Have you had significantly increased sweating?,HP:0000975,Hyperhidrosis,curated,,,,HP:0000975
+E_51,Have you had diarrhea or an increase in stool frequency?,HP:0002014,Diarrhea,curated,,,,HP:0002014
+E_52,Do you have the perception of seeing two images of a single object seen overlapping or adjacent to each other (double vision)?,HP:0000651,Diplopia,curated,,,,HP:0000651
+E_53,"Do you have pain somewhere, related to your reason for consulting?",HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_11,Characterize your pain: = NA,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_112,Characterize your pain: = haunting,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_154,Characterize your pain: = tedious,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_161,Characterize your pain: = sensitive,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_179,Characterize your pain: = a knife stroke,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_180,Characterize your pain: = tugging,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_181,Characterize your pain: = burning,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_182,Characterize your pain: = a cramp,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_183,Characterize your pain: = heavy,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_184,Characterize your pain: = a pulse,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_191,Characterize your pain: = violent,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_192,Characterize your pain: = sharp,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_193,Characterize your pain: = sickening,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_196,Characterize your pain: = scary,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_198,Characterize your pain: = exhausting,HP:0012531,Pain,curated,,,,HP:0012531
+E_54=V_71,Characterize your pain: = heartbreaking,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_100,Do you feel pain somewhere? = hip(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_101,Do you feel pain somewhere? = upper chest,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_103,Do you feel pain somewhere? = hypochondrium(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_104,Do you feel pain somewhere? = hypochondrium(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_108,Do you feel pain somewhere? = cheek(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_109,Do you feel pain somewhere? = cheek(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_119,Do you feel pain somewhere? = calf(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_120,Do you feel pain somewhere? = calf(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_122,Do you feel pain somewhere? = nose,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_123,Do you feel pain somewhere? = nowhere,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_124,Do you feel pain somewhere? = occiput,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_125,Do you feel pain somewhere? = eye(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_126,Do you feel pain somewhere? = eye(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_127,Do you feel pain somewhere? = scapula(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_128,Do you feel pain somewhere? = scapula(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_129,Do you feel pain somewhere? = ear(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_130,Do you feel pain somewhere? = ear(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_131,Do you feel pain somewhere? = toe (1)(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_132,Do you feel pain somewhere? = toe (1)(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_133,Do you feel pain somewhere? = toe (2)(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_134,Do you feel pain somewhere? = toe (2)(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_135,Do you feel pain somewhere? = toe (3)(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_136,Do you feel pain somewhere? = toe (3)(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_137,Do you feel pain somewhere? = palace,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_148,Do you feel pain somewhere? = pharynx,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_149,Do you feel pain somewhere? = sole(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_150,Do you feel pain somewhere? = sole(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_152,Do you feel pain somewhere? = thumb(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_153,Do you feel pain somewhere? = pubis,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_159,Do you feel pain somewhere? = breast(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_160,Do you feel pain somewhere? = breast(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_163,Do you feel pain somewhere? = under the jaw,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_166,Do you feel pain somewhere? = temple(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_167,Do you feel pain somewhere? = temple(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_168,Do you feel pain somewhere? = testicle(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_169,Do you feel pain somewhere? = testicle(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_170,Do you feel pain somewhere? = posterior chest wall(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_171,Do you feel pain somewhere? = posterior chest wall(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_172,Do you feel pain somewhere? = tibia(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_173,Do you feel pain somewhere? = tibia(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_174,Do you feel pain somewhere? = trachea,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_177,Do you feel pain somewhere? = triceps(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_178,Do you feel pain somewhere? = triceps(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_187,Do you feel pain somewhere? = belly,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_194,Do you feel pain somewhere? = shoulder(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_195,Do you feel pain somewhere? = shoulder(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_197,Do you feel pain somewhere? = epigastric,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_20,Do you feel pain somewhere? = tonsil(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_21,Do you feel pain somewhere? = tonsil(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_25,Do you feel pain somewhere? = back of head,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_26,Do you feel pain somewhere? = back of the neck,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_29,Do you feel pain somewhere? = lower chest,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_30,Do you feel pain somewhere? = biceps(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_31,Do you feel pain somewhere? = biceps(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_32,Do you feel pain somewhere? = mouth,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_33,Do you feel pain somewhere? = thyroid cartilage,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_34,Do you feel pain somewhere? = ankle(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_35,Do you feel pain somewhere? = ankle(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_38,Do you feel pain somewhere? = cervical spine,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_39,Do you feel pain somewhere? = thoracic spine,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_43,Do you feel pain somewhere? = lateral side of the foot(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_44,Do you feel pain somewhere? = lateral side of the foot(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_47,Do you feel pain somewhere? = popliteal fossa(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_48,Do you feel pain somewhere? = popliteal fossa(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_51,Do you feel pain somewhere? = thigh(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_52,Do you feel pain somewhere? = thigh(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_53,Do you feel pain somewhere? = side of the neck(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_54,Do you feel pain somewhere? = side of the neck(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_55,Do you feel pain somewhere? = side of the chest(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_56,Do you feel pain somewhere? = side of the chest(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_62,Do you feel pain somewhere? = top of the head,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_63,Do you feel pain somewhere? = finger (ring finger)(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_64,Do you feel pain somewhere? = finger (ring finger)(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_65,Do you feel pain somewhere? = finger (little finger)(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_66,Do you feel pain somewhere? = finger (little finger)(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_67,Do you feel pain somewhere? = finger (index)(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_68,Do you feel pain somewhere? = finger (index)(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_69,Do you feel pain somewhere? = finger (middle)(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_70,Do you feel pain somewhere? = finger (middle)(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_72,Do you feel pain somewhere? = dorsal aspect of the foot(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_73,Do you feel pain somewhere? = dorsal aspect of the foot(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_74,Do you feel pain somewhere? = dorsal aspect of the wrist(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_75,Do you feel pain somewhere? = dorsal aspect of the wrist(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_80,Do you feel pain somewhere? = palmar face of the wrist(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_81,Do you feel pain somewhere? = palmar face of the wrist(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_84,Do you feel pain somewhere? = flank(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_85,Do you feel pain somewhere? = flank(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_87,Do you feel pain somewhere? = iliac fossa(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_88,Do you feel pain somewhere? = iliac fossa(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_89,Do you feel pain somewhere? = forehead,HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_92,Do you feel pain somewhere? = knee(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_93,Do you feel pain somewhere? = knee(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_55=V_99,Do you feel pain somewhere? = hip(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_56=0,How intense is the pain? = 0,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=1,How intense is the pain? = 1,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=10,How intense is the pain? = 10,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=2,How intense is the pain? = 2,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=3,How intense is the pain? = 3,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=4,How intense is the pain? = 4,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=5,How intense is the pain? = 5,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=6,How intense is the pain? = 6,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=7,How intense is the pain? = 7,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=8,How intense is the pain? = 8,HP:0012531,Pain,curated,,,,HP:0012531
+E_56=9,How intense is the pain? = 9,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_101,Does the pain radiate to another location? = upper chest,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_118,Does the pain radiate to another location? = chin,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_121,Does the pain radiate to another location? = jaw,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_122,Does the pain radiate to another location? = nose,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_123,Does the pain radiate to another location? = nowhere,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_127,Does the pain radiate to another location? = scapula(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_128,Does the pain radiate to another location? = scapula(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_159,Does the pain radiate to another location? = breast(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_160,Does the pain radiate to another location? = breast(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_163,Does the pain radiate to another location? = under the jaw,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_166,Does the pain radiate to another location? = temple(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_167,Does the pain radiate to another location? = temple(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_170,Does the pain radiate to another location? = posterior chest wall(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_171,Does the pain radiate to another location? = posterior chest wall(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_174,Does the pain radiate to another location? = trachea,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_177,Does the pain radiate to another location? = triceps(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_178,Does the pain radiate to another location? = triceps(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_194,Does the pain radiate to another location? = shoulder(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_195,Does the pain radiate to another location? = shoulder(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_25,Does the pain radiate to another location? = back of head,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_29,Does the pain radiate to another location? = lower chest,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_30,Does the pain radiate to another location? = biceps(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_31,Does the pain radiate to another location? = biceps(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_33,Does the pain radiate to another location? = thyroid cartilage,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_39,Does the pain radiate to another location? = thoracic spine,HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_55,Does the pain radiate to another location? = side of the chest(R),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_56,Does the pain radiate to another location? = side of the chest(L),HP:0012531,Pain,curated,,,,HP:0012531
+E_57=V_89,Does the pain radiate to another location? = forehead,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=0,How precisely is the pain located? = 0,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=1,How precisely is the pain located? = 1,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=10,How precisely is the pain located? = 10,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=2,How precisely is the pain located? = 2,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=3,How precisely is the pain located? = 3,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=4,How precisely is the pain located? = 4,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=5,How precisely is the pain located? = 5,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=6,How precisely is the pain located? = 6,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=7,How precisely is the pain located? = 7,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=8,How precisely is the pain located? = 8,HP:0012531,Pain,curated,,,,HP:0012531
+E_58=9,How precisely is the pain located? = 9,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=0,How fast did the pain appear? = 0,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=1,How fast did the pain appear? = 1,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=10,How fast did the pain appear? = 10,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=2,How fast did the pain appear? = 2,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=3,How fast did the pain appear? = 3,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=4,How fast did the pain appear? = 4,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=5,How fast did the pain appear? = 5,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=6,How fast did the pain appear? = 6,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=7,How fast did the pain appear? = 7,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=8,How fast did the pain appear? = 8,HP:0012531,Pain,curated,,,,HP:0012531
+E_59=9,How fast did the pain appear? = 9,HP:0012531,Pain,curated,,,,HP:0012531
+E_6,Do you have chronic pancreatitis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_6
+E_60,Do you consume energy drinks regularly?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_60
+E_61,Are you currently using intravenous drugs?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_61
+E_62,Do you regularly take stimulant drugs?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_62
+E_63,Do you have difficulty articulating words/speaking?,HP:0001260,Dysarthria,curated,,,,HP:0001260
+E_64,Do you feel out of breath with minimal physical effort?,HP:0002875,Exertional dyspnea,curated,,,,HP:0002875
+E_65,"Do you have difficulty swallowing, or have a feeling of discomfort/blockage when swallowing?",HP:0002015,Dysphagia,curated,,,,HP:0002015
+E_66,Are you experiencing shortness of breath or difficulty breathing in a significant way?,HP:0002094,Dyspnea,curated,,,,HP:0002094
+E_67,Do you have bouts of choking or shortness of breath that wake you up at night?,HP:0034807,Paroxysmal nocturnal dyspnea,curated,,,,HP:0034807
+E_69,Do you have diabetes?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_69
+E_7,Do you have a poor diet?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_7
+E_70,Are you significantly overweight compared to people of the same height as you?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_70
+E_71,Do you have high cholesterol or do you take medications to treat high cholesterol?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_71
+E_72,Have you had one or several flare ups of chronic obstructive pulmonary disease (COPD) in the past year?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_72
+E_73,"In the last month, have you been in contact with anyone infected with the Ebola virus?",,,antecedent (not a phenotype),,,0.0,LOCAL:E_73
+E_74,Have you noticed a diffuse (widespread) redness in one or both eyes?,HP:0030953,Conjunctival hyperemia,curated,,,,HP:0030953
+E_75,Do you feel like you are (or were) choking or suffocating?,HP:0030842,Choking episodes,curated,,,,HP:0030842
+E_76,Do you feel slightly dizzy or lightheaded?,HP:0002321,Vertigo,curated,,,,HP:0002321
+E_77,Do you have a cough that produces colored or more abundant sputum than usual?,HP:0031245,Productive cough,curated,,,,HP:0031245
+E_78,Do you drink alcohol excessively or do you have an addiction to alcohol?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_78
+E_79,Do you smoke cigarettes?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_79
+E_8,Do you currently undergo dialysis?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_8
+E_80,Have you ever been diagnosed with depression?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_80
+E_81,Do you suffer from chronic anxiety?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_81
+E_82,Do you feel lightheaded and dizzy or do you feel like you are about to faint?,HP:0031972,Presyncope,curated,,,,HP:0031972
+E_83,Have you noticed weakness in your facial muscles and/or eyes?,HP:0030319,Weakness of facial musculature,curated,,,,HP:0030319
+E_84,Do you feel weakness in both arms and/or both legs?,HP:0003690,Limb muscle weakness,curated,,,,HP:0003690
+E_86,"Do you have any close family members who suffer from allergies (any type), hay fever or eczema?",,,antecedent (not a phenotype),,,0.0,LOCAL:E_86
+E_87,Do you have any family members who have asthma?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_87
+E_88,Do you feel so tired that you are unable to do your usual activities or are you stuck in your bed all day long?,HP:0012378,Fatigue,curated,,,,HP:0012378
+E_89,Do you constantly feel fatigued or do you have non-restful sleep?,HP:0012378,Fatigue,curated,,,,HP:0012378
+E_9,Do you have swollen or painful lymph nodes?,HP:0002716,Lymphadenopathy,curated,,,,HP:0002716
+E_90,Do your symptoms of muscle weakness increase with fatigue and/or stress?,HP:0003473,Fatigable weakness,curated,,,,HP:0003473
+E_91,Do you have a fever (either felt or measured with a thermometer)?,HP:0001945,Fever,curated,,,,HP:0001945
+E_92,Did your cheeks suddenly turn red?,HP:0031284,Flushing,curated,,,,HP:0031284
+E_93,"Do you have numbness, loss of sensation or tingling in the feet?",HP:0003401,Paresthesia,curated,,,,HP:0003401
+E_94,Have you had chills or shivers?,HP:0025143,Chills,curated,,,,HP:0025143
+E_95,Do you have Parkinson’s disease?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_95
+E_96,Have you gained weight recently?,HP:0004324,Increased body weight,curated,,,,HP:0004324
+E_97,Do you have a sore throat?,HP:0033050,Pharyngalgia,curated,,,,HP:0033050
+E_98,Do you have a hiatal hernia?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_98
+E_99,Have you ever had a migraine or is a member of your family known to have migraines?,,,antecedent (not a phenotype),,,0.0,LOCAL:E_99

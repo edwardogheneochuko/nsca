@@ -1,0 +1,86 @@
+[mendeley] 3000/3294
+{
+ "dataset": "mendeley",
+ "test_patients": 3294,
+ "known_test_patients": 2406,
+ "heldout_test_patients": 888,
+ "heldout_diseases": [
+  "breast infection (mastitis)",
+  "eye alignment disorder",
+  "lymphadenitis"
+ ],
+ "stage1": {
+  "nodes": 799,
+  "clusters": 37,
+  "true_diseases": 40,
+  "diseases_recovered_as_cluster_majority": 36,
+  "ARI": 0.8581,
+  "NMI": 0.9569,
+  "purity": 0.8874,
+  "outlier_rate": 0.0478,
+  "ARI_non_outliers": 0.8644,
+  "noise_buffer_patients": 973,
+  "outlier_rate_known": 0.0478,
+  "outlier_rate_heldout": 0.964
+ },
+ "stage2": {
+  "fidelity_validation": 0.9584372402327515,
+  "cart_esoinn_agreement_test": 0.7872,
+  "reliable_rate_known": 0.9268,
+  "reliable_rate_heldout": 0.0304
+ },
+ "stage3": {
+  "known_accuracy": 0.9422,
+  "known_accuracy_when_not_flagged": 0.9874,
+  "true_disease_in_top3": 0.9921,
+  "false_new_rate_known": 0.0457,
+  "heldout_flagged_as_new": 0.991,
+  "accuracy_by_confidence": {
+   "high": {
+    "n": 1967,
+    "accuracy": 0.9903
+   },
+   "medium": {
+    "n": 213,
+    "accuracy": 0.9859
+   },
+   "low": {
+    "n": 116,
+    "accuracy": 0.9397
+   }
+  },
+  "variant_stage1_outlier_and_unreliable_also_flags": {
+   "false_new_rate_known": 0.0711,
+   "heldout_flagged_as_new": 0.9955
+  },
+  "per_heldout_disease": {
+   "breast infection (mastitis)": {
+    "patients": 309,
+    "flagged": 1.0,
+    "flagged_cases_spread_over_clusters": 5,
+    "most_common_wrong_known_diagnosis": []
+   },
+   "eye alignment disorder": {
+    "patients": 289,
+    "flagged": 1.0,
+    "flagged_cases_spread_over_clusters": 4,
+    "most_common_wrong_known_diagnosis": []
+   },
+   "lymphadenitis": {
+    "patients": 290,
+    "flagged": 0.9724,
+    "flagged_cases_spread_over_clusters": 6,
+    "most_common_wrong_known_diagnosis": [
+     [
+      "sialoadenitis",
+      5
+     ],
+     [
+      "oral thrush (yeast infection)",
+      2
+     ]
+    ]
+   }
+  }
+ }
+}

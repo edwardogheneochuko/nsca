@@ -1,7 +1,11 @@
-fastapi>=0.110
-uvicorn[standard]>=0.29
-numpy>=1.26
-pandas>=2.1
-pydantic>=2.6
-pytest>=8.0
-httpx>=0.27
+fastapi==0.161.1
+uvicorn==0.54.0
+pydantic==2.13.5
+numpy==2.5.3
+pandas==3.0.5
+scipy==1.18.1
+scikit-learn==1.9.1   # must match the version used to train: the CART surrogate is saved with joblib
+joblib==1.6.0
+# tests only
+pytest
+httpx

@@ -1,7 +1,41 @@
+# Python
 __pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
 .venv/
+venv/
+env/
+
+# Local environment and secrets
 .env
-*.pyc
+.env.*
+!.env.example
+
+# Tests and tooling
 .pytest_cache/
-data/processed/*
-!data/processed/.gitkeep
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Local databases and logs
+*.sqlite3
+*.db
+*.log
+!reports/*.log
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Note: models/ and data/hpo/hp.obo are needed by the server and stay tracked.
+
+# Claude Code personal settings
+.claude/settings.local.json

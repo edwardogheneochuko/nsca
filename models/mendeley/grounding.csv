@@ -1,0 +1,189 @@
+feature,meaning,hpo_id,hpo_label,method,review_suggestion,suggestion_id,suggestion_score,term
+anxiety and nervousness,anxiety and nervousness,HP:0000739,Anxiety,curated,,,,HP:0000739
+depression,depression,HP:0000716,Depression,exact,,,,HP:0000716
+shortness of breath,shortness of breath,HP:0002094,Dyspnea,exact,,,,HP:0002094
+depressive or psychotic symptoms,depressive or psychotic symptoms,HP:0000716,Depression,curated,,,,HP:0000716
+sharp chest pain,sharp chest pain,HP:0100749,Chest pain,curated,,,,HP:0100749
+dizziness,dizziness,HP:0002321,Vertigo,curated,,,,HP:0002321
+insomnia,insomnia,HP:0100785,Insomnia,exact,,,,HP:0100785
+abnormal involuntary movements,abnormal involuntary movements,HP:0004305,Involuntary movements,curated,,,,HP:0004305
+chest tightness,chest tightness,HP:0031352,Chest tightness,exact,,,,HP:0031352
+palpitations,palpitations,HP:0001962,Palpitations,exact,,,,HP:0001962
+irregular heartbeat,irregular heartbeat,HP:0011675,Arrhythmia,exact,,,,HP:0011675
+sore throat,sore throat,HP:0033050,Pharyngalgia,exact,,,,HP:0033050
+difficulty speaking,difficulty speaking,HP:0001260,Dysarthria,curated,,,,HP:0001260
+cough,cough,HP:0012735,Cough,exact,,,,HP:0012735
+nasal congestion,nasal congestion,HP:0001742,Nasal congestion,exact,,,,HP:0001742
+throat swelling,throat swelling,HP:0011855,Pharyngeal edema,exact,,,,HP:0011855
+diminished hearing,diminished hearing,HP:0000365,Hearing impairment,curated,,,,HP:0000365
+lump in throat,lump in throat,,,no fitting HPO term,Pharyngalgia,HP:0033050,0.653,LOCAL:lump in throat
+throat feels tight,throat feels tight,,,no fitting HPO term,Pharyngalgia,HP:0033050,0.527,LOCAL:throat feels tight
+difficulty in swallowing,difficulty in swallowing,HP:0002015,Dysphagia,curated,,,,HP:0002015
+skin swelling,skin swelling,HP:0000969,Edema,curated,,,,HP:0000969
+retention of urine,retention of urine,HP:0000016,Urinary retention,curated,,,,HP:0000016
+groin mass,groin mass,,,no fitting HPO term,Groin pain,HP:0031520,0.645,LOCAL:groin mass
+leg pain,leg pain,HP:0012514,Lower limb pain,exact,,,,HP:0012514
+hip pain,hip pain,HP:0030838,Hip pain,exact,,,,HP:0030838
+suprapubic pain,suprapubic pain,HP:0002027,Abdominal pain,curated,,,,HP:0002027
+blood in stool,blood in stool,HP:0002573,Hematochezia,curated,,,,HP:0002573
+lack of growth,lack of growth,HP:0001510,Growth delay,curated,,,,HP:0001510
+symptoms of the scrotum and testes,symptoms of the scrotum and testes,HP:0000035,Abnormal testis morphology,curated,,,,HP:0000035
+swelling of scrotum,swelling of scrotum,,,no fitting HPO term,Absent scrotum,HP:0008707,0.625,LOCAL:swelling of scrotum
+pain in testicles,pain in testicles,HP:0033839,Testicular pain,exact,,,,HP:0033839
+jaundice,jaundice,HP:0000952,Jaundice,exact,,,,HP:0000952
+mass in scrotum,mass in scrotum,,,no fitting HPO term,Absent scrotum,HP:0008707,0.713,LOCAL:mass in scrotum
+irritable infant,irritable infant,HP:0000737,Irritability,curated,,,,HP:0000737
+abusing alcohol,abusing alcohol,HP:0030955,Addictive alcohol use,curated,,,,HP:0030955
+fainting,fainting,HP:0007185,Loss of consciousness,exact,,,,HP:0007185
+drug abuse,drug abuse,,,no fitting HPO term,Addictive nitrous oxide use,HP:4000128,0.46,LOCAL:drug abuse
+sharp abdominal pain,sharp abdominal pain,HP:0002027,Abdominal pain,curated,,,,HP:0002027
+feeling ill,feeling ill,HP:0033834,Malaise,curated,,,,HP:0033834
+vomiting,vomiting,HP:0002013,Vomiting,exact,,,,HP:0002013
+headache,headache,HP:0002315,Headache,exact,,,,HP:0002315
+nausea,nausea,HP:0002018,Nausea,exact,,,,HP:0002018
+diarrhea,diarrhea,HP:0002014,Diarrhea,exact,,,,HP:0002014
+vaginal itching,vaginal itching,HP:0000989,Pruritus,curated,,,,HP:0000989
+painful urination,painful urination,HP:0100518,Dysuria,curated,,,,HP:0100518
+involuntary urination,involuntary urination,HP:0000020,Urinary incontinence,curated,,,,HP:0000020
+lower abdominal pain,lower abdominal pain,HP:0002027,Abdominal pain,curated,,,,HP:0002027
+intermenstrual bleeding,intermenstrual bleeding,HP:0100608,Metrorrhagia,exact,,,,HP:0100608
+hand or finger pain,hand or finger pain,HP:0046505,Hand pain,curated,,,,HP:0046505
+wrist pain,wrist pain,HP:0030836,Wrist pain,exact,,,,HP:0030836
+hand or finger swelling,hand or finger swelling,HP:0025131,Finger swelling,curated,,,,HP:0025131
+arm pain,arm pain,HP:0012513,Upper limb pain,curated,,,,HP:0012513
+wrist swelling,wrist swelling,HP:0001225,Wrist swelling,exact,,,,HP:0001225
+arm stiffness or tightness,arm stiffness or tightness,HP:0001387,Joint stiffness,curated,,,,HP:0001387
+arm swelling,arm swelling,HP:0000969,Edema,curated,,,,HP:0000969
+lip swelling,lip swelling,HP:0031244,Swollen lip,exact,,,,HP:0031244
+abnormal appearing skin,abnormal appearing skin,HP:0011121,Abnormal skin morphology,curated,,,,HP:0011121
+skin lesion,skin lesion,HP:0011121,Abnormal skin morphology,curated,,,,HP:0011121
+acne or pimples,acne or pimples,HP:0001061,Acne,curated,,,,HP:0001061
+facial pain,facial pain,HP:0012531,Pain,curated,,,,HP:0012531
+mouth ulcer,mouth ulcer,HP:0000155,Oral ulcer,exact,,,,HP:0000155
+skin growth,skin growth,HP:0200036,Skin nodule,curated,,,,HP:0200036
+eye deviation,eye deviation,HP:0000486,Strabismus,curated,,,,HP:0000486
+diminished vision,diminished vision,HP:0000505,Visual impairment,curated,,,,HP:0000505
+double vision,double vision,HP:0000651,Diplopia,exact,,,,HP:0000651
+cross-eyed,cross-eyed,HP:0000486,Strabismus,exact,,,,HP:0000486
+symptoms of eye,symptoms of eye,HP:0000478,Abnormality of the eye,curated,,,,HP:0000478
+pain in eye,pain in eye,HP:0200026,Ocular pain,curated,,,,HP:0200026
+eye moves abnormally,eye moves abnormally,HP:0000496,Abnormality of eye movement,curated,,,,HP:0000496
+irregular appearing scalp,irregular appearing scalp,HP:0001965,Abnormal scalp morphology,curated,,,,HP:0001965
+swollen lymph nodes,swollen lymph nodes,HP:0002716,Lymphadenopathy,exact,,,,HP:0002716
+back pain,back pain,HP:0003418,Back pain,exact,,,,HP:0003418
+neck pain,neck pain,HP:0030833,Neck pain,exact,,,,HP:0030833
+low back pain,low back pain,HP:0003419,Low back pain,exact,,,,HP:0003419
+pain of the anus,pain of the anus,HP:0500005,Anal pain,curated,,,,HP:0500005
+pelvic pain,pelvic pain,HP:0034267,Pelvic pain,exact,,,,HP:0034267
+regurgitation,regurgitation,HP:0002020,Gastroesophageal reflux,curated,,,,HP:0002020
+peripheral edema,peripheral edema,HP:0012398,Peripheral edema,exact,,,,HP:0012398
+neck mass,neck mass,,,no fitting HPO term,Fetal neck mass,HP:0034240,0.822,LOCAL:neck mass
+ear pain,ear pain,HP:0030766,Ear pain,exact,,,,HP:0030766
+jaw swelling,jaw swelling,HP:0030793,Jaw swelling,exact,,,,HP:0030793
+mouth dryness,mouth dryness,HP:0000217,Xerostomia,curated,,,,HP:0000217
+neck swelling,neck swelling,HP:6000176,Anterior neck swelling,curated,,,,HP:6000176
+knee pain,knee pain,HP:0030839,Knee pain,exact,,,,HP:0030839
+foot or toe pain,foot or toe pain,HP:0025238,Foot pain,curated,,,,HP:0025238
+ankle pain,ankle pain,HP:0030840,Ankle pain,exact,,,,HP:0030840
+bones are painful,bones are painful,HP:0002653,Bone pain,curated,,,,HP:0002653
+elbow pain,elbow pain,HP:0030835,Elbow pain,exact,,,,HP:0030835
+knee swelling,knee swelling,HP:0001386,Joint swelling,curated,,,,HP:0001386
+knee lump or mass,knee lump or mass,,,no fitting HPO term,Finger mass,HP:6001163,0.461,LOCAL:knee lump or mass
+weight gain,weight gain,HP:0004324,Increased body weight,curated,,,,HP:0004324
+problems with movement,problems with movement,HP:0100022,Abnormality of movement,curated,,,,HP:0100022
+knee stiffness or tightness,knee stiffness or tightness,HP:0025263,Stiff knee,curated,,,,HP:0025263
+leg swelling,leg swelling,HP:0010741,Pedal edema,curated,,,,HP:0010741
+foot or toe swelling,foot or toe swelling,HP:0010741,Pedal edema,curated,,,,HP:0010741
+heartburn,heartburn,HP:0002020,Gastroesophageal reflux,exact,,,,HP:0002020
+smoking problems,smoking problems,,,no fitting HPO term,Abnormality of the dentition,HP:0000164,0.655,LOCAL:smoking problems
+infant feeding problem,infant feeding problem,HP:0011968,Feeding difficulties,curated,,,,HP:0011968
+difficulty eating,difficulty eating,HP:0011968,Feeding difficulties,curated,,,,HP:0011968
+weakness,weakness,HP:0025406,Asthenia,exact,,,,HP:0025406
+decreased heart rate,decreased heart rate,HP:0001662,Bradycardia,curated,,,,HP:0001662
+increased heart rate,increased heart rate,HP:0001649,Tachycardia,curated,,,,HP:0001649
+bleeding or discharge from nipple,bleeding or discharge from nipple,HP:6000062,Abnormal nipple discharge,curated,,,,HP:6000062
+plugged feeling in ear,plugged feeling in ear,,,no fitting HPO term,Dysregulated negative emotional state,HP:0031467,0.432,LOCAL:plugged feeling in ear
+spots or clouds in vision,spots or clouds in vision,HP:0100832,Vitreous floaters,curated,,,,HP:0100832
+eye redness,eye redness,HP:0030953,Conjunctival hyperemia,curated,,,,HP:0030953
+itchiness of eye,itchiness of eye,HP:0033841,Ocular pruritus,curated,,,,HP:0033841
+eye burns or stings,eye burns or stings,HP:0200026,Ocular pain,curated,,,,HP:0200026
+decreased appetite,decreased appetite,HP:0004396,Poor appetite,exact,,,,HP:0004396
+excessive anger,excessive anger,HP:0031473,Anger,curated,,,,HP:0031473
+loss of sensation,loss of sensation,HP:0003474,Somatic sensory dysfunction,curated,,,,HP:0003474
+disturbance of memory,disturbance of memory,HP:0002354,Memory impairment,curated,,,,HP:0002354
+paresthesia,paresthesia,HP:0003401,Paresthesia,exact,,,,HP:0003401
+side pain,side pain,HP:0030157,Flank pain,curated,,,,HP:0030157
+fever,fever,HP:0001945,Fever,exact,,,,HP:0001945
+shoulder pain,shoulder pain,HP:0030834,Shoulder pain,exact,,,,HP:0030834
+tongue lesions,tongue lesions,HP:0030809,Abnormal tongue morphology,curated,,,,HP:0030809
+leg cramps or spasms,leg cramps or spasms,HP:0003394,Muscle spasm,curated,,,,HP:0003394
+ache all over,ache all over,HP:0003326,Myalgia,curated,,,,HP:0003326
+lower body pain,lower body pain,HP:0012514,Lower limb pain,curated,,,,HP:0012514
+problems during pregnancy,problems during pregnancy,,,no fitting HPO term,Abnormality of the dentition,HP:0000164,0.565,LOCAL:problems during pregnancy
+upper abdominal pain,upper abdominal pain,HP:0410019,Epigastric pain,curated,,,,HP:0410019
+stomach bloating,stomach bloating,HP:0003270,Abdominal distention,curated,,,,HP:0003270
+unusual color or odor to urine,unusual color or odor to urine,HP:0012086,Abnormal urinary color,curated,,,,HP:0012086
+kidney mass,kidney mass,HP:0009726,Renal neoplasm,curated,,,,HP:0009726
+swollen abdomen,swollen abdomen,HP:0003270,Abdominal distention,curated,,,,HP:0003270
+difficulty breathing,difficulty breathing,HP:0002094,Dyspnea,exact,,,,HP:0002094
+rib pain,rib pain,HP:0100749,Chest pain,curated,,,,HP:0100749
+joint pain,joint pain,HP:0002829,Arthralgia,exact,,,,HP:0002829
+hand or finger lump or mass,hand or finger lump or mass,HP:6001163,Finger mass,curated,,,,HP:6001163
+chills,chills,HP:0025143,Chills,exact,,,,HP:0025143
+groin pain,groin pain,HP:0031520,Groin pain,exact,,,,HP:0031520
+fatigue,fatigue,HP:0012378,Fatigue,exact,,,,HP:0012378
+regurgitation.1,regurgitation.1,HP:0002020,Gastroesophageal reflux,curated,,,,HP:0002020
+symptoms of the kidneys,symptoms of the kidneys,HP:0012210,Abnormal renal morphology,curated,,,,HP:0012210
+coughing up sputum,coughing up sputum,HP:0031245,Productive cough,curated,,,,HP:0031245
+pain or soreness of breast,pain or soreness of breast,HP:0034265,Mastalgia,curated,,,,HP:0034265
+rectal bleeding,rectal bleeding,HP:0002573,Hematochezia,exact,,,,HP:0002573
+constipation,constipation,HP:0002019,Constipation,exact,,,,HP:0002019
+temper problems,temper problems,HP:0000718,Aggressive behavior,curated,,,,HP:0000718
+hemoptysis,hemoptysis,HP:0002105,Hemoptysis,exact,,,,HP:0002105
+lymphedema,lymphedema,HP:0001004,Lymphedema,exact,,,,HP:0001004
+skin on leg or foot looks infected,skin on leg or foot looks infected,,,no fitting HPO term,Foot osteomyelitis,HP:0001886,0.446,LOCAL:skin on leg or foot looks infected
+allergic reaction,allergic reaction,HP:0012393,Allergy,curated,,,,HP:0012393
+sleepiness,sleepiness,HP:0002329,Drowsiness,exact,,,,HP:0002329
+apnea,apnea,HP:0002104,Apnea,exact,,,,HP:0002104
+abnormal breathing sounds,abnormal breathing sounds,HP:0030829,Abnormal breath sound,curated,,,,HP:0030829
+pulling at ears,pulling at ears,,,no fitting HPO term,Hair-pulling,HP:0012167,0.614,LOCAL:pulling at ears
+redness in ear,redness in ear,,,no fitting HPO term,Fatigue,HP:0012378,0.616,LOCAL:redness in ear
+fluid retention,fluid retention,HP:0000969,Edema,exact,,,,HP:0000969
+sinus congestion,sinus congestion,HP:0001742,Nasal congestion,curated,,,,HP:0001742
+recent pregnancy,recent pregnancy,,,no fitting HPO term,Postterm pregnancy,HP:0031169,0.644,LOCAL:recent pregnancy
+burning chest pain,burning chest pain,HP:0100749,Chest pain,curated,,,,HP:0100749
+back cramps or spasms,back cramps or spasms,HP:0003394,Muscle spasm,curated,,,,HP:0003394
+"muscle cramps, contractures, or spasms","muscle cramps, contractures, or spasms",HP:0003394,Muscle spasm,curated,,,,HP:0003394
+back mass or lump,back mass or lump,,,no fitting HPO term,Finger mass,HP:6001163,0.477,LOCAL:back mass or lump
+heavy menstrual flow,heavy menstrual flow,HP:0000132,Menorrhagia,curated,,,,HP:0000132
+infertility,infertility,HP:0000789,Infertility,exact,,,,HP:0000789
+sweating,sweating,HP:0000975,Hyperhidrosis,exact,,,,HP:0000975
+mass on eyelid,mass on eyelid,HP:0010604,Cyst of the eyelid,curated,,,,HP:0010604
+swollen eye,swollen eye,HP:0100539,Periorbital edema,curated,,,,HP:0100539
+eyelid swelling,eyelid swelling,HP:0100540,Palpebral edema,curated,,,,HP:0100540
+eyelid lesion or rash,eyelid lesion or rash,HP:0000492,Abnormal eyelid morphology,curated,,,,HP:0000492
+irregular appearing nails,irregular appearing nails,HP:0001597,Abnormal nail morphology,curated,,,,HP:0001597
+itching of skin,itching of skin,HP:0000989,Pruritus,curated,,,,HP:0000989
+hurts to breath,hurts to breath,HP:0033771,Pleuritic chest pain,curated,,,,HP:0033771
+"skin dryness, peeling, scaliness, or roughness","skin dryness, peeling, scaliness, or roughness",HP:0000958,Dry skin,curated,,,,HP:0000958
+skin on arm or hand looks infected,skin on arm or hand looks infected,,,no fitting HPO term,Cellulitis,HP:0100658,0.459,LOCAL:skin on arm or hand looks infected
+itchy scalp,itchy scalp,HP:0000989,Pruritus,curated,,,,HP:0000989
+skin rash,skin rash,HP:0000988,Skin rash,exact,,,,HP:0000988
+ankle swelling,ankle swelling,HP:0001785,Ankle swelling,exact,,,,HP:0001785
+foot or toe stiffness or tightness,foot or toe stiffness or tightness,HP:0001387,Joint stiffness,curated,,,,HP:0001387
+elbow swelling,elbow swelling,HP:0001386,Joint swelling,curated,,,,HP:0001386
+early or late onset of menopause,early or late onset of menopause,,,no fitting HPO term,Premature ovarian insufficiency,HP:0008209,0.824,LOCAL:early or late onset of menopause
+swollen or red tonsils,swollen or red tonsils,HP:0030812,Enlarged tonsils,curated,,,,HP:0030812
+irregular belly button,irregular belly button,HP:0001551,Abnormal umbilicus morphology,curated,,,,HP:0001551
+hip stiffness or tightness,hip stiffness or tightness,HP:0025262,Stiff hip,curated,,,,HP:0025262
+mouth pain,mouth pain,HP:0012531,Pain,curated,,,,HP:0012531
+penis pain,penis pain,HP:0040411,Pain in penis,curated,,,,HP:0040411
+penis redness,penis redness,,,no fitting HPO term,Fatigue,HP:0012378,0.544,LOCAL:penis redness
+diaper rash,diaper rash,HP:0000988,Skin rash,curated,,,,HP:0000988
+lump or mass of breast,lump or mass of breast,HP:0032408,Breast mass,curated,,,,HP:0032408
+postpartum problems of the breast,postpartum problems of the breast,,,no fitting HPO term,Abnormality of the dentition,HP:0000164,0.529,LOCAL:postpartum problems of the breast
+throat redness,throat redness,HP:0025439,Pharyngitis,curated,,,,HP:0025439
+joint swelling,joint swelling,HP:0001386,Joint swelling,exact,,,,HP:0001386
+redness in or around nose,redness in or around nose,HP:0001041,Facial erythema,curated,,,,HP:0001041
+back stiffness or tightness,back stiffness or tightness,HP:0003306,Spinal rigidity,curated,,,,HP:0003306
+wrist lump or mass,wrist lump or mass,,,no fitting HPO term,Wrist pain,HP:0030836,0.464,LOCAL:wrist lump or mass

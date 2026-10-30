@@ -1,0 +1,99 @@
+{
+ "dataset": "phenopackets",
+ "test_patients": 999,
+ "known_test_patients": 799,
+ "heldout_test_patients": 200,
+ "heldout_diseases": [
+  "Cornelia de Lange syndrome 1",
+  "Mitochondrial DNA depletion syndrome 6 (hepatocerebral type)",
+  "Pseudohypoparathyroidism Ia"
+ ],
+ "stage1": {
+  "nodes": 166,
+  "clusters": 46,
+  "true_diseases": 36,
+  "diseases_recovered_as_cluster_majority": 28,
+  "ARI": 0.3731,
+  "NMI": 0.7238,
+  "purity": 0.7046,
+  "outlier_rate": 0.0526,
+  "ARI_non_outliers": 0.3939,
+  "noise_buffer_patients": 119,
+  "outlier_rate_known": 0.0526,
+  "outlier_rate_heldout": 0.2
+ },
+ "stage2": {
+  "fidelity_validation": 0.8290816326530612,
+  "cart_esoinn_agreement_test": 0.7407,
+  "reliable_rate_known": 0.0,
+  "reliable_rate_heldout": 0.0
+ },
+ "stage3": {
+  "known_accuracy": 0.7685,
+  "known_accuracy_when_not_flagged": 0.8784,
+  "true_disease_in_top3": 0.8949,
+  "false_new_rate_known": 0.1252,
+  "heldout_flagged_as_new": 0.885,
+  "accuracy_by_confidence": {
+   "high": {
+    "n": 0,
+    "accuracy": 0.0
+   },
+   "medium": {
+    "n": 0,
+    "accuracy": 0.0
+   },
+   "low": {
+    "n": 699,
+    "accuracy": 0.8784
+   }
+  },
+  "variant_stage1_outlier_and_unreliable_also_flags": {
+   "false_new_rate_known": 0.1602,
+   "heldout_flagged_as_new": 0.92
+  },
+  "per_heldout_disease": {
+   "Cornelia de Lange syndrome 1": {
+    "patients": 60,
+    "flagged": 0.8833,
+    "flagged_cases_spread_over_clusters": 8,
+    "most_common_wrong_known_diagnosis": [
+     [
+      "Intellectual developmental disorder with dysmorphic facies and behavioral abnormalities",
+      3
+     ],
+     [
+      "Kabuki Syndrome 1",
+      2
+     ]
+    ]
+   },
+   "Mitochondrial DNA depletion syndrome 6 (hepatocerebral type)": {
+    "patients": 60,
+    "flagged": 0.8,
+    "flagged_cases_spread_over_clusters": 11,
+    "most_common_wrong_known_diagnosis": [
+     [
+      "Short stature, optic nerve atrophy, and Pelger-Huet anomaly",
+      12
+     ]
+    ]
+   },
+   "Pseudohypoparathyroidism Ia": {
+    "patients": 80,
+    "flagged": 0.95,
+    "flagged_cases_spread_over_clusters": 3,
+    "most_common_wrong_known_diagnosis": [
+     [
+      "Intellectual developmental disorder with dysmorphic facies and behavioral abnormalities",
+      2
+     ],
+     [
+      "Holt-Oram syndrome",
+      1
+     ]
+    ]
+   }
+  }
+ }
+}
