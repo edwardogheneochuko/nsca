@@ -27,6 +27,7 @@ Stage 3  Grounding (HPO) ─► Candidates (top-k) ─► Consistency (exclusion
 | `app/stage3_symbolic/knowledge_base.py`, `candidates.py` | Candidates (top-k diseases) |
 | `app/stage3_symbolic/consistency.py` | Consistency (exclusion rules) |
 | `app/stage3_symbolic/resolution.py` | Resolution → Known disease / Flag as new |
+| `app/flag_store.py` | Saves every "Flag as new" case to disk for review |
 | `app/engine.py` | Wires the stages together |
 | `app/api/main.py` | FastAPI endpoints |
 | `scripts/train.py`, `scripts/evaluate.py` | Offline training and evaluation |
@@ -58,7 +59,11 @@ Environment variables: `NSCA_DEFAULT_DATASET` (`ddxplus` or `mendeley`), `CORS_O
 | POST | `/parse-text` | Free text ("I have itching and feeling unwell") → questions to tick, negations, unrecognised parts |
 | POST | `/identify` | Run a patient through all three stages |
 | GET | `/clusters?dataset=` | Each ESOINN cluster with its name, size and strongest if-then rules |
-| GET | `/flags?dataset=` | Patients flagged as possibly new this session |
+| GET | `/flags?dataset=&status=` | Saved possible-new cases (newest first), review counts, groups of similar cases |
+| GET | `/flags/{case_id}` | One saved case with all its evidence |
+| PATCH | `/flags/{case_id}` | Reviewer decision: `confirmed_new`, `known_disease` (+ `disease`), `dismissed`, `pending_review` |
+| DELETE | `/flags/{case_id}` | Remove a saved case |
+| GET | `/flags/export?dataset=` | All saved cases as CSV |
 
 `POST /identify` body:
 
@@ -81,6 +86,23 @@ Response: `outcome` (`known_disease` | `flag_as_new`), `disease`, `confidence`
 HPO names and synonyms, an everyday / Nigerian-English phrase list ("catarrh", "stooling", "my body is hot"),
 negation ("no sore throat" is recorded as absent), typo tolerance, and DDXPlus pain locations ("pain in my
 stomach" ticks pain and selects "belly"). The app shows what it understood before running the check.
+
+## Saved "possible new disease" cases
+
+Every patient resolved to **Flag as new** is saved to `flags/<dataset>.json` (change the folder with
+`NSCA_FLAG_DIR`), so cases survive a restart. Each case stores the symptoms and any free text typed,
+the HPO terms, the Stage 1 cluster, distance and outlier status, the Stage 2 reliability and rule, every
+Stage 3 candidate with the checks it failed, and a review status (`pending_review` at first).
+
+* **Duplicates:** the same symptoms submitted again within 10 minutes return the existing case id.
+* **Similar cases:** each new case is linked to earlier cases sharing at least half of its symptoms
+  (Jaccard distance ≤ 0.5). `/flags` returns connected groups of similar cases; a growing group is
+  the evidence for a new disease, which one case alone is not.
+* **Review:** a reviewer marks a case confirmed new, known disease (with its name) or dismissed, in the
+  app's *Saved new-disease cases* screen or with `PATCH /flags/{case_id}`.
+* Evaluation (`scripts/evaluate.py`) and tests never write to the real store.
+* On Render's free plan the disk is wiped on redeploy; attach a persistent disk and point
+  `NSCA_FLAG_DIR` at it to keep cases.
 
 ## Datasets
 
@@ -150,7 +172,7 @@ into one "new disease" by themselves.
 | ARI / NMI / purity | 0.373 / 0.724 / 0.705 |
 | Baseline: agglomerative clustering given the true k | ARI 0.325 |
 | Stage 2 surrogate fidelity | 0.829 (below 0.90 → every record marked unreliable) |
-| Stage 3 known patients diagnosed correctly | 76.9 % |
+| Stage 3 known patients diagnosed correctly | 76.8 % |
 | True disease among top-3 candidates | 89.5 % |
 | Known patients wrongly flagged as new | 12.5 % |
 | Held-out patients flagged as new | 88.5 % |
@@ -169,7 +191,7 @@ Full numbers: `reports/evaluation_<dataset>.json`.
 * The knowledge base comes from the same data generator as the patients, which flatters Stage 3.
 * HPO's own disease annotations cover mostly rare diseases, so they are not used for candidates.
 * ESOINN results vary with stream order (Mendeley ARI 0.71–0.85 over four orders); report several seeds.
-* Flagged cases are provisional; no confirmation step is implemented (the flow chart ends at "Flag as new").
+* Flagged cases are saved and can be reviewed and grouped, but the model does not retrain on confirmed cases.
 * DDXPlus rules and node differences are dominated by antecedent and "answer = No" columns
   (e.g. "traveled out of the country = N"), which makes them hard to read. Training on symptom columns
   only, or hiding "No" answers from explanations, would fix readability; not yet tested.

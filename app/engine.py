@@ -16,7 +16,8 @@ import numpy as np
 import pandas as pd
 
 from app import questions as q_mod
-from app.config import MODEL_DIR
+from app.config import FLAG_DIR, MODEL_DIR
+from app.flag_store import FlagStore, case_from_result
 from app.stage1_neural.esoinn import ESOINN
 from app.stage2_xai import exemplars as ex_mod
 from app.stage2_xai import node_difference, rules
@@ -58,7 +59,7 @@ class Engine:
         for i, lab in enumerate(self.grounding.hpo_label):
             if isinstance(lab, str):
                 self._lookup.setdefault(lab.lower(), i)
-        self.flagged: list[dict] = []
+        self.flags = FlagStore(FLAG_DIR / f"{dataset}.json", dataset)
         self.questions = q_mod.build(self.features, self.meanings, self.is_antecedent, dataset)
         self._parser = None
 
@@ -85,7 +86,9 @@ class Engine:
         return x, unknown, filled
 
     # -------------------------------------------------------------- pipeline
-    def identify(self, x: np.ndarray, record_flag: bool = True) -> dict:
+    def identify(self, x: np.ndarray, record_flag: bool = True, context: dict | None = None) -> dict:
+        """Run all three stages. A patient resolved to `flag_as_new` is saved to the flag store
+        (unless record_flag is False, as in evaluation). `context` adds the raw input to the saved case."""
         t0 = time.perf_counter()
         x = np.asarray(x, np.uint8)
         e = self.esoinn
@@ -97,7 +100,9 @@ class Engine:
         stage1 = {"winner_node": s1, "cluster_id": cluster, "cluster_name": e.cluster_label.get(cluster),
                   "distance": round(d1, 4), "cluster_radius": round(e.cluster_radius.get(cluster, float("inf")), 4),
                   "outlier": bool(p["outlier"][0]), "runner_up_node": runner,
-                  "runner_up_cluster": int(e.cluster[runner]) if runner >= 0 else None}
+                  "runner_up_cluster": int(e.cluster[runner]) if runner >= 0 else None,
+                  "features_total": int(len(x)), "features_present": int(x.sum()),
+                  "network_nodes": int(len(e.nodes)), "network_clusters": int(len(set(e.cluster[e.nodes].tolist())))}
         # Stage 2
         rule = rules.rule_for_patient(self.surrogate, x, self.meanings)
         nd = node_difference.explain(x, e.W[s1], e.W[runner] if runner >= 0 else None, self.meanings)
@@ -119,13 +124,15 @@ class Engine:
         out = {"dataset": self.dataset,
                "stage1_neural": stage1,
                "stage2_fused_record": record.model_dump(),
-               "stage3_symbolic": {"grounding": grounded, "candidates": checked, "resolution": res},
+               "stage3_symbolic": {"grounding": grounded, "candidates": checked, "resolution": res,
+                                   "ontology": "Human Phenotype Ontology (HPO)", "hpo_release": self.hpo.data_version},
                "outcome": res["outcome"], "disease": res["disease"], "confidence": res["confidence"],
                "elapsed_ms": round((time.perf_counter() - t0) * 1000, 1)}
+        out["flag"] = None
         if record_flag and res["outcome"] == "flag_as_new":
-            self.flagged.append({"symptoms": [self.meanings[i] for i in np.flatnonzero(x)],
-                                 "cluster_id": cluster, "nearest_known": checked[0]["disease"] if checked else None,
-                                 "time": time.strftime("%Y-%m-%dT%H:%M:%S")})
+            ctx = dict(context or {})
+            ctx["model"] = {"trained_at": self.meta.get("trained_at"), "hpo_release": self.hpo.data_version}
+            out["flag"] = self.flags.save(np.flatnonzero(x).tolist(), case_from_result(out, x, self.meanings, ctx))
         return out
 
     def status(self) -> dict:
@@ -138,4 +145,4 @@ class Engine:
                            "grounded_symptoms": int((self.grounding.method.isin(["exact", "curated", "override"])).sum()),
                            "symptom_columns": int((~self.is_antecedent).sum()),
                            "thresholds": self.thresholds.to_dict(), "top_k": self.k},
-                "flagged_as_new_this_session": len(self.flagged)}
+                "flagged_cases": self.flags.counts()}

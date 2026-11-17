@@ -6,6 +6,9 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("NSCA_DATA_DIR", ROOT / "data"))
 MODEL_DIR = Path(os.environ.get("NSCA_MODEL_DIR", ROOT / "models"))
 REPORT_DIR = ROOT / "reports"
+# Saved "possible new disease" cases (kept across restarts). On a host with a temporary disk, point this at a
+# persistent volume.
+FLAG_DIR = Path(os.environ.get("NSCA_FLAG_DIR", ROOT / "flags"))
 HPO_OBO = DATA_DIR / "hpo" / "hp.obo"
 
 DATASETS = ("mendeley", "ddxplus", "phenopackets")

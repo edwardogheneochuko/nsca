@@ -167,3 +167,72 @@ def test_parse_text_pain_location_and_unrecognised(client):
     r = client.post("/parse-text", json={"dataset": "ddxplus", "text": "pain in my stomach, I love football"}).json()
     assert r["symptoms"] == ["E_53"] and len(r["answers"]["E_55"]) == 1
     assert r["unrecognised"] == ["I love football"]
+
+
+# ---------------------------------------------------------------- saved "new disease" cases
+def test_flag_store_saves_links_similar_and_survives_reload(tmp_path):
+    from app.flag_store import FlagStore
+    case = {"symptoms": ["a"], "hpo_terms": [], "stage1": {"cluster_name": "x", "distance": 0.9, "outlier": True},
+            "stage2": {"reliable": False}, "candidates": [], "nearest_known": None}
+    st = FlagStore(tmp_path / "d.json", "ddxplus")
+    a = st.save([1, 2, 3, 4], case)
+    assert a["saved"] and a["similar_cases"] == []
+    assert st.save([1, 2, 3, 4], case)["duplicate_of_recent"]          # resubmission is not a second case
+    b = st.save([1, 2, 3, 5], case)                                      # shares 3 of 5 symptoms
+    assert b["similar_cases"][0]["case_id"] == a["case_id"]
+    assert st.groups() == [[a["case_id"], b["case_id"]]]
+    st.review(a["case_id"], "confirmed_new", note="checked")
+    again = FlagStore(tmp_path / "d.json", "ddxplus")                  # e.g. after a server restart
+    assert again.counts()["total"] == 2 and again.get(a["case_id"])["review"]["status"] == "confirmed_new"
+    assert again.get(a["case_id"])["similar_cases"][0]["case_id"] == b["case_id"]
+    assert "case_id" in again.to_csv().splitlines()[0]
+
+
+@needs_models
+def test_new_disease_is_saved_and_reviewable(client):
+    # palpitations + shortness of breath only: no known disease passes the checks (see the demo)
+    body = {"dataset": "ddxplus", "symptoms": ["E_155", "E_66"], "detail": "summary",
+            "text": "my heart is racing and I am short of breath"}
+    r = client.post("/identify", json=body).json()
+    if r["outcome"] != "flag_as_new":
+        pytest.skip("this input was not flagged by the current model")
+    cid = r["flag"]["case_id"]
+    saved = client.get(f"/flags/{cid}?dataset=ddxplus").json()
+    assert saved["free_text"] == body["text"] and saved["review"]["status"] == "pending_review"
+    assert saved["hpo_terms"] and saved["candidates"]
+    assert client.post("/identify", json=body).json()["flag"]["duplicate_of_recent"]
+    rv = client.patch(f"/flags/{cid}", json={"dataset": "ddxplus", "status": "known_disease", "disease": "Panic attack"})
+    assert rv.status_code == 200 and rv.json()["review"]["disease"] == "Panic attack"
+    lst = client.get("/flags?dataset=ddxplus").json()
+    assert lst["counts"]["known_disease"] >= 1
+    assert client.get("/flags/export?dataset=ddxplus").text.startswith("case_id")
+    assert client.patch("/flags/NOPE", json={"dataset": "ddxplus", "status": "dismissed"}).status_code == 404
+
+
+@needs_models
+def test_known_disease_is_not_saved(client):
+    r = client.post("/identify", json={"dataset": "ddxplus", "symptoms": ["E_91", "E_201", "E_97", "E_181"],
+                                       "detail": "summary"}).json()
+    if r["outcome"] == "known_disease":
+        assert r["flag"] is None
+
+
+def test_flag_store_delete_and_clear(tmp_path):
+    from app.flag_store import FlagStore
+    case = {"symptoms": [], "hpo_terms": [], "stage1": {}, "stage2": {}, "candidates": [], "nearest_known": None}
+    st = FlagStore(tmp_path / "d.json", "ddxplus")
+    a, b, c = (st.save(f, case)["case_id"] for f in ([1, 2], [1, 2, 3], [7, 8]))
+    assert st.delete(a) and not st.delete(a)
+    assert all(s["case_id"] != a for s in st.get(b)["similar_cases"])
+    st.review(c, "dismissed")
+    assert st.clear("dismissed") == 1 and st.clear() == 1
+    assert FlagStore(tmp_path / "d.json", "ddxplus").counts()["total"] == 0
+
+
+@needs_models
+def test_candidates_have_structured_checks(client):
+    r = client.post("/identify", json={"dataset": "ddxplus", "symptoms": ["E_201", "E_45", "E_91"]}).json()
+    c = r["stages"]["stage3_symbolic"]["candidates"][0]
+    assert [k["name"] for k in c["checks"]] == ["overall_match", "usual_symptoms", "nothing_against", "symptoms_explained"]
+    assert c["consistent"] == all(k["passed"] for k in c["checks"])
+    assert "core_present" in c and r["stages"]["stage3_symbolic"]["hpo_release"]

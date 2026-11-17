@@ -49,8 +49,22 @@ def check(t_patient: np.ndarray, cand: dict, kb, Fp: np.ndarray, th: Thresholds,
         failures.append(f"{len(excl_hits)} excluding symptom(s) present")
     if unexp_frac > th.max_unexplained:
         failures.append(f"{unexp_frac:.0%} of symptoms never seen with this disease")
+    # Structured form of the four checks, for plain-language display
+    checks = [
+        {"name": "overall_match", "passed": bool(cand["score"] >= th.min_score),
+         "value": round(float(cand["score"]), 3), "limit": th.min_score},
+        {"name": "usual_symptoms", "passed": bool(cand["core_coverage"] >= th.min_core_coverage),
+         "value": round(float(cand["core_coverage"]), 3), "limit": th.min_core_coverage},
+        {"name": "nothing_against", "passed": bool(len(excl_hits) <= th.max_excluding),
+         "value": len(excl_hits), "limit": th.max_excluding},
+        {"name": "symptoms_explained", "passed": bool(unexp_frac <= th.max_unexplained),
+         "value": round(float(unexp_frac), 3), "limit": th.max_unexplained},
+    ]
+    core_present = [kb.label(kb.terms[j]) for j in present if kb.core[i, j]]
+    typical_present = [kb.label(kb.terms[j]) for j in present if not kb.core[i, j] and Fp[i, j] >= 0.3]
     return {**{k: v for k, v in cand.items() if k != "_i"},
-            "consistent": not failures, "failed_checks": failures,
+            "consistent": not failures, "failed_checks": failures, "checks": checks,
+            "core_present": core_present, "typical_present": typical_present,
             "excluding_present": [kb.label(t) for t in excl_hits],
             "unexplained_symptoms": [kb.label(t) for t in unexplained],
             "missing_core_symptoms": [kb.label(t) for t in missing_core][:8],

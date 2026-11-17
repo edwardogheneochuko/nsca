@@ -9,9 +9,11 @@ import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.schemas import IdentifyRequest, IdentifyResponse, ParseRequest, ParseResponse, Question, Symptom
+from app.api.schemas import (IdentifyRequest, IdentifyResponse, ParseRequest, ParseResponse, Question,
+                             ReviewRequest, Symptom)
 from app.config import DATASETS, DEFAULT_DATASET, MODEL_DIR
 from app.engine import Engine
 
@@ -95,7 +97,8 @@ def identify(req: IdentifyRequest):
     x, unknown, filled = e.encode(req.symptoms, req.fill_defaults)
     if x.sum() == 0:
         raise HTTPException(422, {"error": "none of the symptoms were recognised", "unknown_symptoms": unknown})
-    r = e.identify(x)
+    r = e.identify(x, record_flag=req.save_flag,
+                   context={"submitted": req.symptoms, "text": req.text, "filled_defaults": filled})
     rec = r["stage2_fused_record"]
     summary = {
         "cluster": {"id": rec["cluster_id"], "name": rec["cluster_name"]},
@@ -110,13 +113,53 @@ def identify(req: IdentifyRequest):
                             unknown_symptoms=unknown, filled_defaults=filled, summary=summary,
                             stages={k: r[k] for k in ("stage1_neural", "stage2_fused_record", "stage3_symbolic")}
                             if req.detail == "full" else None,
-                            elapsed_ms=r["elapsed_ms"])
+                            flag=r["flag"], elapsed_ms=r["elapsed_ms"])
 
 
 @app.get("/flags")
-def flags(dataset: str | None = Query(None)):
-    """Patients flagged as possible new disease during this server session (provisional)."""
-    return engine(dataset).flagged
+def flags(dataset: str | None = Query(None), status: str | None = Query(None, description="filter by review status")):
+    """Saved cases flagged as a possible new disease (newest first), with review counts and groups of
+    similar cases. Saved on disk, so they survive a server restart."""
+    st = engine(dataset).flags
+    return {"counts": st.counts(), "groups_of_similar_cases": st.groups(), "cases": st.list(status)}
+
+
+@app.delete("/flags")
+def clear_flags(dataset: str | None = Query(None), status: str | None = Query(None, description="only this review status")):
+    """Delete all saved cases, or only those with the given review status (e.g. dismissed)."""
+    return {"deleted": engine(dataset).flags.clear(status)}
+
+
+@app.get("/flags/export", response_class=PlainTextResponse)
+def flags_export(dataset: str | None = Query(None)):
+    """All saved cases as CSV (open in Excel)."""
+    e = engine(dataset)
+    return PlainTextResponse(e.flags.to_csv(), media_type="text/csv",
+                             headers={"Content-Disposition": f'attachment; filename="flagged_cases_{e.dataset}.csv"'})
+
+
+@app.get("/flags/{case_id}")
+def flag_case(case_id: str, dataset: str | None = Query(None)):
+    c = engine(dataset).flags.get(case_id)
+    if c is None:
+        raise HTTPException(404, f"case {case_id} not found")
+    return c
+
+
+@app.patch("/flags/{case_id}")
+def review_flag(case_id: str, req: ReviewRequest):
+    """Record a reviewer's decision: confirmed_new, known_disease (give `disease`), dismissed or back to pending."""
+    try:
+        return engine(req.dataset).flags.review(case_id, req.status, req.note, req.disease)
+    except KeyError:
+        raise HTTPException(404, f"case {case_id} not found")
+
+
+@app.delete("/flags/{case_id}")
+def delete_flag(case_id: str, dataset: str | None = Query(None)):
+    if not engine(dataset).flags.delete(case_id):
+        raise HTTPException(404, f"case {case_id} not found")
+    return {"deleted": case_id}
 
 
 @app.get("/clusters")
